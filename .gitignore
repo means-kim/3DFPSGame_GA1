@@ -2,15 +2,6 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-
-# Rider
-.idea
-.idea/
-.idea/**
-
-# vscode
-.vscode
-
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -46,7 +37,6 @@ ExportedObj/
 *.csproj
 *.unityproj
 *.sln
-*slnx
 *.suo
 *.tmp
 *.user
@@ -84,16 +74,11 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# Map author's local review scenes, backups and one-off migration tools.
-/Assets/MapReview/
-/Assets/MapReview.meta
+# Rider (JetBrains IDE) 설정 폴더
+.idea/
 
-# README documentation is local-only (including Unity .meta files).
-[Rr][Ee][Aa][Dd][Mm][Ee]*
+# macOS Finder 생성 파일
+.DS_Store
 
-/Assets/Feel/
-.husky/
-
-# Gemini CLI
-.gemini/
-gha-creds-*.json
+# vscode
+.vscode
