@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 // 역할: 마우스를 움직이면 카메라를 그 방향으로 회전하고 싶다.
-public class FpsCameraRotate : MonoBehaviour
+public class CameraRotate : MonoBehaviour
 {
-    [SerializeField] private float _rotateSpeed = 200f;
+    [SerializeField] private float _rotationSpeed = 200f;
 
     private float _accumulationX = 0f;  // 좌우  회전 각도
     private float _accumulationY = 0f; // 위아래 회전 각도
@@ -14,11 +14,11 @@ public class FpsCameraRotate : MonoBehaviour
         // 1. 마우스 입력을 받는다.
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-        Debug.Log($"mouseX: {mouseX}, mouseY: {mouseY}");
+        // Debug.Log($"mouseX: {mouseX}, mouseY: {mouseY}");
         
         // 2. 마우스 입력 만큼 회전값을 누적한다.
-        _accumulationX += mouseX * _rotateSpeed * Time.deltaTime;
-        _accumulationY += -mouseY * _rotateSpeed * Time.deltaTime;
+        _accumulationX += mouseX * _rotationSpeed * Time.deltaTime;
+        _accumulationY += -mouseY * _rotationSpeed * Time.deltaTime;
         
         // 3. Y 값을 누적하기 전에 내 변수에서 먼저 -90 ~ 90 도로 제한
         _accumulationY = Mathf.Clamp(_accumulationY, -90, 90);
