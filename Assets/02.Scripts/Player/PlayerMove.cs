@@ -13,8 +13,15 @@ public class PlayerMove : MonoBehaviour
     [Header("점프 횟수")]
     [SerializeField] private int _maxJumpCount = 2;
 
+    [Header("스테미나")]
+    [SerializeField] private float _maxStamina = 100f;
+
     private float _currentSpeed;
     private int _currentJumpCount = 0;
+    private float _currentStamina = 100f;
+    private float _strintCost = 20f;
+    private float _jumpCost = 15f;
+    private float recovery = 10f;
 
     private void Awake()
     {
@@ -47,21 +54,27 @@ public class PlayerMove : MonoBehaviour
         }
 
         // 4. 만약에 점프키를 누르면 && 땅이라면... 점프를 한다.
-        if (Input.GetButtonDown("Jump") && _currentJumpCount < _maxJumpCount) // 중재자 패턴
+        if (Input.GetButtonDown("Jump") && _currentJumpCount < _maxJumpCount && _currentStamina >= _jumpCost)
         {
             _yVelocity = _jumpPower;
             _currentJumpCount++;
+            _currentStamina -= _jumpCost;
         }
 
         // 5. Shift를 누르면 스피드를 12로 올린다.
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && _currentStamina >= _strintCost)
         {
             _currentSpeed = 12f;
+            _currentStamina -= _strintCost * Time.deltaTime;
         }
         else
         {
             _currentSpeed = _moveSpeed;
+            _currentStamina += recovery * Time.deltaTime;
         }
+
+        // 스테미나 0 ~ 최대 스테미나 고정
+        _currentStamina = Mathf.Clamp(_currentStamina, 0, _maxStamina);
 
         // 6. 속도를 구한다.
         Vector3 velocity = direction * _currentSpeed;
