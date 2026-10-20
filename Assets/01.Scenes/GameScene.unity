@@ -1385,7 +1385,7 @@ MonoBehaviour:
   _staminaRecovery: 15
   _sprintCost: 20
   _jumpCost: 20
-  _characterController: {fileID: 0}
+  _characterController: {fileID: 1445782025}
 --- !u!143 &1445782025
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1423,6 +1423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2bd33d84effce43b44326fb8ae59c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGunFire
+  _hitEffectPrefab: {fileID: 19800002, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
 --- !u!1 &1475784912
 GameObject:
   m_ObjectHideFlags: 0
