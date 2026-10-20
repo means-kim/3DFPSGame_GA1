@@ -10,11 +10,13 @@ public class PlayerGunFire : MonoBehaviour
 
     [SerializeField] private float _damage = 10f; // 공격력
     [SerializeField] private float _fireInterval = 0.1f; // 발사 속도
+    [SerializeField] private float _reloadInterval = 1f;
 
     [Header("탄창")]
     [SerializeField] private int _magazineSize = 50;
 
     private float _fireTimer = 0f;
+    private float _reloadTimer = 0f;
     private int _currentAmmo;
 
     private bool _isReloading = false;
@@ -26,8 +28,14 @@ public class PlayerGunFire : MonoBehaviour
 
     private void Update()
     {
-        // 0. 발사 타이머를 지난 시간 만큼 줄인다.
+        // 0. 발사 타이머/리로드 타이머를 지난 시간 만큼 줄인다.
         _fireTimer -= Time.deltaTime;
+        _reloadTimer -= Time.deltaTime;
+
+        if (_reloadTimer <= 0f)
+        {
+            _isReloading = false;
+        }
 
         // 1. 마우스 왼쪽 버튼 입력 받기
         if (Input.GetButton("Fire1") && _fireTimer <= 0f) // 0 ~ 2 사이
@@ -37,6 +45,12 @@ public class PlayerGunFire : MonoBehaviour
                 _fireTimer = _fireInterval;
                 Shoot();
             }
+        }
+
+        if (Input.GetButtonDown("Reload") && _reloadTimer <= 0f)
+        {
+            _isReloading = true;
+            Reload();
         }
     }
 
@@ -67,5 +81,11 @@ public class PlayerGunFire : MonoBehaviour
         }
 
         _currentAmmo--;
+    }
+
+    private void Reload()
+    {
+        _reloadTimer = _reloadInterval;
+        _currentAmmo = _magazineSize;
     }
 }
