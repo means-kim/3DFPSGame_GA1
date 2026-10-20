@@ -11,7 +11,18 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private float _damage = 10f; // 공격력
     [SerializeField] private float _fireInterval = 0.1f; // 발사 속도
 
+    [Header("탄창")]
+    [SerializeField] private int _magazineSize = 50;
+
     private float _fireTimer = 0f;
+    private int _currentAmmo;
+
+    private bool _isReloading = false;
+
+    private void Awake()
+    {
+        _currentAmmo = _magazineSize;
+    }
 
     private void Update()
     {
@@ -21,8 +32,11 @@ public class PlayerGunFire : MonoBehaviour
         // 1. 마우스 왼쪽 버튼 입력 받기
         if (Input.GetButton("Fire1") && _fireTimer <= 0f) // 0 ~ 2 사이
         {
-            _fireTimer = _fireInterval;
-            Shoot();
+            if (_currentAmmo > 0 && _isReloading == false)
+            {
+                _fireTimer = _fireInterval;
+                Shoot();
+            }
         }
     }
 
@@ -51,5 +65,7 @@ public class PlayerGunFire : MonoBehaviour
             effect.transform.forward = hitInfo.normal; // 수직 위치로 회전
             effect.Play();
         }
+
+        _currentAmmo--;
     }
 }

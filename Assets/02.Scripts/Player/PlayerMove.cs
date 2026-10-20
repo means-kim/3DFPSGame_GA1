@@ -15,7 +15,7 @@ public class PlayerMove : MonoBehaviour
     [Header("스탯")]
     [SerializeField] private float _moveSpeed = 7f;
 
-    [SerializeField] private float _strintSpeed = 12f;
+    [SerializeField] private float _sprintSpeed = 12f;
     [SerializeField] private float _jumpPower = 10f;
     [SerializeField] private float _staminaRecovery = 15f;
     [SerializeField] private float _sprintCost = 10f;
