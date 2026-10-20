@@ -1144,9 +1144,9 @@ GameObject:
   - component: {fileID: 1445782021}
   - component: {fileID: 1445782020}
   - component: {fileID: 1445782019}
+  - component: {fileID: 1445782025}
   - component: {fileID: 1445782023}
   - component: {fileID: 1445782024}
-  - component: {fileID: 1445782025}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1277,6 +1277,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
   _moveSpeed: 7
+  _strintSpeed: 12
+  _jumpPower: 10
+  _staminaRecovery: 15
+  _sprintCost: 20
+  _jumpCost: 20
+  _characterController: {fileID: 0}
 --- !u!143 &1445782025
 CharacterController:
   m_ObjectHideFlags: 0
