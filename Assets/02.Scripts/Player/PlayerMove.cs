@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 // 키보드 방향키에 따라 그 방향으로 이동하고 싶다.
 public class PlayerMove : MonoBehaviour
@@ -15,6 +16,8 @@ public class PlayerMove : MonoBehaviour
 
     [Header("스테미나")]
     [SerializeField] private float _maxStamina = 100f;
+
+    [SerializeField] private Slider _staminaBar;
 
     private float _currentSpeed;
     private int _currentJumpCount = 0;
@@ -75,6 +78,9 @@ public class PlayerMove : MonoBehaviour
 
         // 스테미나 0 ~ 최대 스테미나 고정
         _currentStamina = Mathf.Clamp(_currentStamina, 0, _maxStamina);
+
+        // 현재 스테미나 비율을 0~1 비율로 표시
+        _staminaBar.value = _currentStamina / _maxStamina;
 
         // 6. 속도를 구한다.
         Vector3 velocity = direction * _currentSpeed;
