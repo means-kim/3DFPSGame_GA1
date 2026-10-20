@@ -1,3 +1,4 @@
+using UnityEngine.UI;
 using UnityEngine;
 
 // 키보드 방향키에 따라 그 방향으로 이동하고 싶다.
@@ -22,6 +23,9 @@ public class PlayerMove : MonoBehaviour
 
     [Header("컴포넌트")]
     [SerializeField] private CharacterController _characterController;
+
+    [Header("스태미나 UI")]
+    [SerializeField] private Slider _staminaSlider;
 
     private void Awake()
     {
@@ -76,6 +80,8 @@ public class PlayerMove : MonoBehaviour
         {
             _stamina = Mathf.Min(MaxStamina, _stamina + _staminaRecovery * Time.deltaTime);
         }
+
+        _staminaSlider.value = _stamina / MaxStamina;
 
         Vector3 velocity = direction * currentSpeed;
         velocity.y = _yVelocity;
