@@ -10,7 +10,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float _jumpPower = 10f;
     [SerializeField] private CharacterController _characterController;
 
+    [Header("점프 횟수")]
+    [SerializeField] private int _maxJumpCount = 2;
+
     private float _currentSpeed;
+    private int _currentJumpCount = 0;
 
     private void Awake()
     {
@@ -39,12 +43,14 @@ public class PlayerMove : MonoBehaviour
         {
             // 땅에 서있으면 중력 초기화
             _yVelocity = 0f;
+            _currentJumpCount = 0;
         }
 
         // 4. 만약에 점프키를 누르면 && 땅이라면... 점프를 한다.
-        if (Input.GetButtonDown("Jump") && _characterController.isGrounded) // 중재자 패턴
+        if (Input.GetButtonDown("Jump") && _currentJumpCount < _maxJumpCount)
         {
             _yVelocity = _jumpPower;
+            _currentJumpCount++;
         }
 
         // 5. Shift를 누르면 스피드를 12로 올린다.
