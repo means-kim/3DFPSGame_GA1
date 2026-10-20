@@ -10,6 +10,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float _jumpPower = 10f;
     [SerializeField] private CharacterController _characterController;
 
+    private float _currentSpeed;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -45,11 +47,21 @@ public class PlayerMove : MonoBehaviour
             _yVelocity = _jumpPower;
         }
 
-        // 5. 속도를 구한다.
-        Vector3 velocity = direction * _moveSpeed;
+        // 5. Shift를 누르면 스피드를 12로 올린다.
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _currentSpeed = 12f;
+        }
+        else
+        {
+            _currentSpeed = _moveSpeed;
+        }
+
+        // 6. 속도를 구한다.
+        Vector3 velocity = direction * _currentSpeed;
         velocity.y = _yVelocity;
 
-        // 6. 속도(방향과 속력)에 따라 이동한다.
+        // 7. 속도(방향과 속력)에 따라 이동한다.
         // transform.position += direction * _moveSpeed * Time.deltaTime;
         _characterController.Move(velocity * Time.deltaTime);
     }
