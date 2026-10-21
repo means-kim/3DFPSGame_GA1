@@ -1,4 +1,5 @@
 using UnityEngine;
+using Lean.Pool;
 
 // 마우스 오른쪽 버튼을 누르면 시선이 바라보는 방향으로 수류탄을 던지고 싶다.
 public class PlayerBombFire : MonoBehaviour
@@ -43,7 +44,7 @@ public class PlayerBombFire : MonoBehaviour
         if (_currentBomb < _maxBomb)
         {
             // 2. 발사 위치에서 수류탄 생성하기
-            Bomb bomb = Instantiate(_bombPrefab, _firePoint.position, Quaternion.identity);
+            Bomb bomb = LeanPool.Spawn(_bombPrefab, _firePoint.position, Quaternion.identity);
 
             // 3. 차징 시간에 따라 던지는 힘 정하기
             float chargeRatio = Mathf.Clamp01(_chargeTime / _maxChargeTime);
@@ -51,6 +52,10 @@ public class PlayerBombFire : MonoBehaviour
 
             // 4. 생성된 수류탄을 시선 방향으로 던지기
             Rigidbody rigidbody = bomb.GetComponent<Rigidbody>();
+
+            rigidbody.linearVelocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+
             rigidbody.AddForce(Camera.main.transform.forward * power, ForceMode.Impulse);
 
             _currentBomb++;
