@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Lean.Pool;
 
 // 마우스 왼쪽 버튼을 누르면 바라보는 방향으로 총알을 발사하고 싶다.
 public class PlayerGunFire : MonoBehaviour
@@ -84,9 +85,10 @@ public class PlayerGunFire : MonoBehaviour
         {
             // Debug.Log($"{hitInfo.collider.name}이 총알을 맞았다. 데미지: {_damage}");
 
-            ParticleSystem effect = Instantiate(_hitEffectPrefab);
-            effect.transform.position = hitInfo.point; // 맞은 자리
-            effect.transform.forward = hitInfo.normal; // 수직 위치로 회전
+            ParticleSystem effect =
+                LeanPool.Spawn(_hitEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            // effect.transform.position = hitInfo.point; // 맞은 자리
+            // effect.transform.forward = hitInfo.normal; // 수직 위치로 회전
             effect.Play();
         }
     }
