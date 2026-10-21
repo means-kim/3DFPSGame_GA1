@@ -16,7 +16,7 @@ public class PlayerGunFire : MonoBehaviour
 
     private float _fireTimer = 0f;
     private int _bulletCount = 0;
-    private Coroutine _reloadCoroutine = null;
+    private Awaitable _reloadAwaitable = null;
 
     private void Start()
     {
@@ -38,30 +38,31 @@ public class PlayerGunFire : MonoBehaviour
             // 이 방식은: 이 모노비헤이비어가 등록한 모든 코루틴을 실행 취소
             // StopAllCoroutines();
 
-            if (_reloadCoroutine != null)
+            if (_reloadAwaitable != null)
             {
-                StopCoroutine(_reloadCoroutine);
+                _reloadAwaitable.Cancel();
                 Debug.Log("재장전 취소!");
-                _reloadCoroutine = null;
+                _reloadAwaitable = null;
             }
         }
 
         // 2. R키 누르면 총알 재장전
-        if (Input.GetKeyDown(KeyCode.R) && _reloadCoroutine == null)
+        if (Input.GetKeyDown(KeyCode.R) && _reloadAwaitable == null)
         {
-            _reloadCoroutine = StartCoroutine(Reloading_Coroutine());
+            _reloadAwaitable = ReloadingAsync();
         }
     }
 
-    private IEnumerator Reloading_Coroutine()
+    private async Awaitable ReloadingAsync()
     {
         Debug.Log("재장전 시작!");
 
-        yield return new WaitForSeconds(_reloadingTime);
+        await Awaitable.WaitForSecondsAsync(_reloadingTime);
+
         _bulletCount = _maxBulletCount;
 
         Debug.Log("재장전 완료!");
-        _reloadCoroutine = null;
+        _reloadAwaitable = null;
     }
 
     private void Shoot()
