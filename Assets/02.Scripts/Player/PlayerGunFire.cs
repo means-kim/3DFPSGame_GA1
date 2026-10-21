@@ -48,7 +48,7 @@ public class PlayerGunFire : MonoBehaviour
         }
 
         // 2. R키 누르면 총알 재장전
-        if (Input.GetKeyDown(KeyCode.R) && _reloadCoroutine == null)
+        if (Input.GetButtonDown("Reload") && _reloadCoroutine == null)
         {
             _reloadCoroutine = StartCoroutine(Reloading_Coroutine());
         }
