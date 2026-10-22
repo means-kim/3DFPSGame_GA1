@@ -7,7 +7,7 @@ public class ListTest : MonoBehaviour
     // 자료구조(Data Structure)
     // 이런 데이터들을 "효율적"으로 관리(CRUDS)하기 위해 저장하는 구조 방식
     // C - Create: 생성
-    // R - Remove: 삭제
+    // R - Read:    읽기
     // U - Update: 수정
     // D - Delete: 삭제
     // S - Search: 조회
