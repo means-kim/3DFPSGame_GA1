@@ -15,6 +15,7 @@ public enum ZombieState
     Attack, // 공격: 일정 시간마다 플레이어를 때린다.
     Hit, // 피격: 공격을 받아 잠깐 멈칫한다.
     Death, // 죽음: 쓰러지고 잠시 뒤 사라진다.
+    Patrol, // 순찰: 두 지점을 오가면서 순찰한다.
 }
 
 public class Zombie : MonoBehaviour
@@ -27,18 +28,22 @@ public class Zombie : MonoBehaviour
     [SerializeField] private float _comebackDistance = 15f; // 처음 자리에서 이만큼 멀어지면 돌아가는 거리
     [SerializeField] private float _moveSpeed = 5f; // 이동속도
     [SerializeField] private float _health = 30f;
+    [SerializeField] private Vector3 _patrolOffset = new Vector3(-5f, 0f, 0f);
 
+    private Vector3 _patrolPosition;
     private float _attackTimer = 0f;
     private CharacterController _controller;
     private Vector3 _startPosition;
     private GameObject _player;
 
     private ZombieState _state = ZombieState.Idle;
+    private Coroutine _idleCoroutine;
 
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
         _startPosition = transform.position;
+        _patrolPosition = _startPosition + _patrolOffset;
 
         // 게임을 시작하면 플레이어를 찾는다.
         _player = GameObject.FindGameObjectWithTag("Player");
@@ -63,6 +68,10 @@ public class Zombie : MonoBehaviour
             case ZombieState.Attack:
                 Attack();
                 break;
+
+            case ZombieState.Patrol:
+                Patrol();
+                break;
         }
     }
 
@@ -77,6 +86,7 @@ public class Zombie : MonoBehaviour
         _health -= damage;
 
         StopAllCoroutines();
+        _idleCoroutine = null;
 
         if (_health > 0f)
         {
@@ -109,6 +119,19 @@ public class Zombie : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private IEnumerator Idle_CoRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (_state == ZombieState.Idle)
+        {
+            Debug.Log($"{_state} -> Patrol");
+            _state = ZombieState.Patrol;
+        }
+
+        _idleCoroutine = null;
+    }
+
     // 대기 : 제자리에서 플레이어를 기다린다.
     private void Idle()
     {
@@ -119,8 +142,28 @@ public class Zombie : MonoBehaviour
 
         if (distance <= _detectDistance)
         {
+            if (_idleCoroutine != null)
+            {
+                StopCoroutine(_idleCoroutine);
+                _idleCoroutine = null;
+            }
+
             Debug.Log($"{_state} -> Trace");
             _state = ZombieState.Trace;
+            return;
+        }
+
+        if (Vector3.Distance(transform.position, _startPosition) < 1f)
+        {
+            if (_idleCoroutine == null)
+            {
+                _idleCoroutine = StartCoroutine(Idle_CoRoutine());
+            }
+        }
+        else if (_idleCoroutine != null)
+        {
+            StopCoroutine(_idleCoroutine);
+            _idleCoroutine = null;
         }
     }
 
@@ -193,5 +236,29 @@ public class Zombie : MonoBehaviour
             Debug.Log("플레이어를 때렸습니다.");
             _attackTimer = 0f;
         }
+    }
+
+    private void Patrol()
+    {
+        if (Vector3.Distance(transform.position, _player.transform.position) <= _detectDistance)
+        {
+            Debug.Log($"{_state} -> Trace");
+            _state = ZombieState.Trace;
+            return;
+        }
+
+        Vector3 direction = _patrolPosition - transform.position;
+        direction.y = 0f;
+
+        if (direction.magnitude < 0.3f)
+        {
+            Debug.Log($"{_state} -> Comeback");
+            _state = ZombieState.Comeback;
+            return;
+        }
+
+        direction.Normalize();
+        transform.forward = direction;
+        _controller.SimpleMove(direction * _moveSpeed);
     }
 }
