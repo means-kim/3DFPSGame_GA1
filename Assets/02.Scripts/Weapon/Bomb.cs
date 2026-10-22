@@ -12,7 +12,7 @@ public class Bomb : MonoBehaviour
         ParticleSystem effect = LeanPool.Spawn(_explosionEffectPrefab, transform.position, Quaternion.identity);
         effect.Play();
 
-        Debug.Log(collision.gameObject.name);
+        // Debug.Log(collision.gameObject.name);
 
         // Todo: 오브젝트 풀링 적용
         // 폭탄을 삭제한다.
