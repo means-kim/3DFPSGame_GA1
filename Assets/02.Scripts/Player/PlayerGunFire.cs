@@ -93,10 +93,13 @@ public class PlayerGunFire : MonoBehaviour
             effect.Play();
 
             // 맍은 대상이 좀비라면 TakeDamage 호출
-            if (hitInfo.collider.TryGetComponent(out Zombie zombie))
-            {
-                zombie.TakeDamage(_damage);
-            }
+            // if (hitInfo.collider.TryGetComponent(out Zombie zombie))
+            // {
+            //     zombie.TakeDamage(_damage);
+            // }
+
+            hitInfo.collider.GetComponent<Zombie>()?.TakeDamage(_damage);
+            hitInfo.collider.GetComponent<Drum>()?.Damage(_damage);
         }
     }
 }
