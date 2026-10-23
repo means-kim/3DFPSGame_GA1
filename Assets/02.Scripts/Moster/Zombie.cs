@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Lean.Pool;
 
 // FSM(유한 상태 머신) : 유한개의 상태가 있고, 상태마다 행동을 다르게 함으로써 AI를 구현하는 유명한 방법
 // - 상태: 객체가 가질 수 있는 어떤 조건이나 상황
@@ -27,7 +28,8 @@ public class Zombie : MonoBehaviour, IDamageAble
     [SerializeField] private float _attackInterval = 1.2f;
     [SerializeField] private float _comebackDistance = 15f; // 처음 자리에서 이만큼 멀어지면 돌아가는 거리
     [SerializeField] private float _moveSpeed = 5f; // 이동속도
-    [SerializeField] private float _health = 30f;
+    [SerializeField] private float _health;
+    [SerializeField] private float _maxHealth = 30f;
     [SerializeField] private Vector3 _patrolOffset = new Vector3(-5f, 0f, 0f);
 
     [Header("이펙트")]
@@ -42,8 +44,13 @@ public class Zombie : MonoBehaviour, IDamageAble
     private ZombieState _state = ZombieState.Idle;
     private Coroutine _idleCoroutine;
 
+    public float Health => _health;
+    public float MaxHealth => _maxHealth;
+
     private void Start()
     {
+        _health = _maxHealth;
+
         _controller = GetComponent<CharacterController>();
         _startPosition = transform.position;
         _patrolPosition = _startPosition + _patrolOffset;
@@ -94,9 +101,12 @@ public class Zombie : MonoBehaviour, IDamageAble
         if (_health > 0f)
         {
             // 좀비의 자식으로 블러드 스프레이를 생성! -> 위치 수정
-            GameObject bloodSpray = Instantiate(_bloodSprayPrefab, transform);
+            GameObject bloodSpray = LeanPool.Spawn(_bloodSprayPrefab, transform);
             bloodSpray.transform.position = damageInfo.HitPoint;
             bloodSpray.transform.forward = damageInfo.HitNormal;
+
+            // 2초 뒤 풀로 반환
+            LeanPool.Despawn(bloodSpray, 2f);
 
             // 잠깐 멈칫 하고 싶다!
             Debug.Log($"{_state} -> Hit");
