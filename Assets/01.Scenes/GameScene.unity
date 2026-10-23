@@ -2658,7 +2658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a1cf8711b5bad4a9955dd1418478d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_HitEffect
-  _flashTime: 0.2
+  _flashTime: 0.6
+  _fadeTime: 0.3
 --- !u!114 &1545591483
 MonoBehaviour:
   m_ObjectHideFlags: 0
