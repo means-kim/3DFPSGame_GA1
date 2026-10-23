@@ -32,7 +32,14 @@ public class Bomb : MonoBehaviour
         // 1. 드럼통들에게 데미지를 준다.
         foreach (Collider col in colliders)
         {
-            col.GetComponent<IDamageAble>()?.TakeDamage(_damage);
+            DamageInfo damageInfo = new()
+            {
+                Value = _damage,
+                HitPoint = col.ClosestPoint(transform.position), // 폭발 중심에서 가장 가까운 콜라이더 표면 위치
+                HitNormal = (transform.position - col.ClosestPoint(transform.position)).normalized,
+            };
+
+            col.GetComponent<IDamageAble>()?.TakeDamage(damageInfo);
         }
     }
 }

@@ -30,6 +30,9 @@ public class Zombie : MonoBehaviour, IDamageAble
     [SerializeField] private float _health = 30f;
     [SerializeField] private Vector3 _patrolOffset = new Vector3(-5f, 0f, 0f);
 
+    [Header("이펙트")]
+    [SerializeField] private GameObject _bloodSprayPrefab;
+
     private Vector3 _patrolPosition;
     private float _attackTimer = 0f;
     private CharacterController _controller;
@@ -76,14 +79,14 @@ public class Zombie : MonoBehaviour, IDamageAble
     }
 
     // 데미지를 받는다.
-    public void TakeDamage(float damage)
+    public void TakeDamage(DamageInfo damageInfo)
     {
         if (_state == ZombieState.Death)
         {
             return;
         }
 
-        _health -= damage;
+        _health -= damageInfo.Value;
 
         StopAllCoroutines();
         _idleCoroutine = null;
@@ -91,6 +94,9 @@ public class Zombie : MonoBehaviour, IDamageAble
         if (_health > 0f)
         {
             // Todo. 맞은 부위에 피 에펙트를 실행하고 싶다.
+            GameObject bloodSpray = Instantiate(_bloodSprayPrefab);
+            bloodSpray.transform.position = damageInfo.HitPoint;
+            bloodSpray.transform.forward = damageInfo.HitNormal;
 
             // 잠깐 멈칫 하고 싶다!
             Debug.Log($"{_state} -> Hit");

@@ -810,6 +810,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _health: 30
   _patrolOffset: {x: -5, y: 0, z: 0}
+  _bloodSprayPrefab: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
 --- !u!1 &710522452
 GameObject:
   m_ObjectHideFlags: 0
