@@ -90,6 +90,8 @@ public class Zombie : MonoBehaviour, IDamageAble
 
         if (_health > 0f)
         {
+            // Todo. 맞은 부위에 피 에펙트를 실행하고 싶다.
+
             // 잠깐 멈칫 하고 싶다!
             Debug.Log($"{_state} -> Hit");
             _state = ZombieState.Hit;
