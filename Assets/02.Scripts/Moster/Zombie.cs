@@ -93,8 +93,8 @@ public class Zombie : MonoBehaviour, IDamageAble
 
         if (_health > 0f)
         {
-            // Todo. 맞은 부위에 피 에펙트를 실행하고 싶다.
-            GameObject bloodSpray = Instantiate(_bloodSprayPrefab);
+            // 좀비의 자식으로 블러드 스프레이를 생성! -> 위치 수정
+            GameObject bloodSpray = Instantiate(_bloodSprayPrefab, transform);
             bloodSpray.transform.position = damageInfo.HitPoint;
             bloodSpray.transform.forward = damageInfo.HitNormal;
 
