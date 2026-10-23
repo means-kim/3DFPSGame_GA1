@@ -31,6 +31,7 @@ public class Zombie : MonoBehaviour, IDamageAble
     [SerializeField] private float _health;
     [SerializeField] private float _maxHealth = 30f;
     [SerializeField] private Vector3 _patrolOffset = new Vector3(-5f, 0f, 0f);
+    [SerializeField] private float _damage = 10f;
 
     [Header("이펙트")]
     [SerializeField] private GameObject _bloodSprayPrefab;
@@ -251,6 +252,13 @@ public class Zombie : MonoBehaviour, IDamageAble
         {
             // Todo. 공격 애니메이션 실행
             // Todo. 플레이어를 때려!
+            DamageInfo damageInfo = new()
+            {
+                Value = _damage
+            };
+
+            _player.GetComponent<IDamageAble>()?.TakeDamage(damageInfo);
+
             Debug.Log("플레이어를 때렸습니다.");
             _attackTimer = 0f;
         }
