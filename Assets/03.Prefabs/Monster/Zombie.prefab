@@ -477,7 +477,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 2193979186064208649}
   m_HandleRect: {fileID: 0}
@@ -502,6 +502,7 @@ GameObject:
   - component: {fileID: 7287137030551581460}
   - component: {fileID: 6817084191026741164}
   - component: {fileID: 7438978323397805887}
+  - component: {fileID: 3161033248913003368}
   m_Layer: 9
   m_Name: Zombie
   m_TagString: Untagged
@@ -626,5 +627,19 @@ MonoBehaviour:
   _comebackDistance: 12
   _moveSpeed: 5
   _health: 30
+  _maxHealth: 30
   _patrolOffset: {x: -5, y: 0, z: 0}
   _bloodSprayPrefab: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
+--- !u!114 &3161033248913003368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8685602461544521815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9c8476dace00b498612253814f9307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieHealthBar
+  _slider: {fileID: 7415061642983820149}
