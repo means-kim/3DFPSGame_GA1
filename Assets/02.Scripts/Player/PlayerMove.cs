@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     private const float Gravity = -20f;
     private const int MaxJumps = 2;
-    private float _maxStamina = 100f;
+    private const float _maxStamina = 100f;
 
     private float _yVelocity = 0f; // 위 아래 속도, 매 프레임마다 중력 가속도가 붙는다.
     private int _jumpCount = 0; // 점프 횟수
