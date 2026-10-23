@@ -18,7 +18,7 @@ public enum ZombieState
     Patrol, // 순찰: 두 지점을 오가면서 순찰한다.
 }
 
-public class Zombie : MonoBehaviour
+public class Zombie : MonoBehaviour, IDamageAble
 {
     [Header("스탯")]
     [SerializeField] private float _detectDistance = 8f; // 플레이어를 발견하는 거리
