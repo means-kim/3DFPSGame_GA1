@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class UI_Minimap : MonoBehaviour
 {
-    // Todo. +/- 버튼 클릭하면.. ZoomIn/ZoomOut 호출하도록 구현
-
     [SerializeField] private Camera _minimapCamera;
     [SerializeField] private float _zoomStep = 2f;
     [SerializeField] private float _minSize = 2f;

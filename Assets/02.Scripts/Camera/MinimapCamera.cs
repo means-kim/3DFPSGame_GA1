@@ -14,6 +14,4 @@ public class MinimapCamera : MonoBehaviour
         // 2. 대상이 쳐다보는 방향으로 카메라도 회전한다.
         transform.eulerAngles = new Vector3(90, _target.eulerAngles.y, 0f);
     }
-
-    // Todo. ZoomIn/ZoomOut 함수로 분리
 }
