@@ -47,20 +47,46 @@ public class Zombie : MonoBehaviour, IDamageAble
     private Coroutine _idleCoroutine;
 
     public event Action OnDamaged = null;
+    public event Action<Zombie> OnDied = null;
 
     public float Health => _health;
     public float MaxHealth => _maxHealth;
 
-    private void Start()
+    private void Awake()
+    {
+        _controller = GetComponent<CharacterController>();
+    }
+
+    private void OnEnable()
     {
         _health = _maxHealth;
+        _state = ZombieState.Idle;
 
-        _controller = GetComponent<CharacterController>();
+        _idleCoroutine = null;
+        _attackTimer = 0f;
+        _controller.enabled = true; // 죽을 때 끈 컨트롤러를 다시 켠다.
+
         _startPosition = transform.position;
         _patrolPosition = _startPosition + _patrolOffset;
 
         // 게임을 시작하면 플레이어를 찾는다.
-        _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null)
+        {
+            _player = GameObject.FindGameObjectWithTag("Player");
+        }
+
+        // 체력바를 가득 채운 상태로 갱신한다.
+        OnDamaged?.Invoke();
+    }
+
+    public void Setup(Vector3 position)
+    {
+        _controller.enabled = false;
+        transform.position = position;
+        _controller.enabled = true;
+
+        _startPosition = position;
+        _patrolPosition = _startPosition + _patrolOffset;
     }
 
     private void Update()
@@ -125,6 +151,9 @@ public class Zombie : MonoBehaviour, IDamageAble
         {
             Debug.Log($"{_state} -> Death");
             _state = ZombieState.Death;
+
+            OnDied?.Invoke(this); // 죽음이 확정되는 순간 스포너에게 알린다.
+
             StartCoroutine(Death_CoRoutine());
         }
     }
@@ -142,7 +171,7 @@ public class Zombie : MonoBehaviour, IDamageAble
     {
         _controller.enabled = false;
         yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
+        LeanPool.Despawn(gameObject);
     }
 
     private IEnumerator Idle_CoRoutine()
