@@ -9,7 +9,7 @@ public class ZombieSpawner : MonoBehaviour
 
     [SerializeField] private float _spawnInterval = 3f; // 스폰 주기
     [SerializeField] private int _maxZombieCount = 10; // 최대 동시 존재할 좀비 수
-    [SerializeField] private float _spawnRadius = 5f; // 스포너 반경
+    [SerializeField] private float _spawnRadius = 10f; // 스포너 반경
 
     private int _aliveCount = 0;
     private WaitForSeconds _wait;
