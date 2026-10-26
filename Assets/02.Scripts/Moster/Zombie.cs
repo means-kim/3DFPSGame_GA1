@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Lean.Pool;
+using System;
 
 // FSM(유한 상태 머신) : 유한개의 상태가 있고, 상태마다 행동을 다르게 함으로써 AI를 구현하는 유명한 방법
 // - 상태: 객체가 가질 수 있는 어떤 조건이나 상황
@@ -44,6 +45,8 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     private ZombieState _state = ZombieState.Idle;
     private Coroutine _idleCoroutine;
+
+    public event Action OnDamaged = null;
 
     public float Health => _health;
     public float MaxHealth => _maxHealth;
@@ -97,6 +100,8 @@ public class Zombie : MonoBehaviour, IDamageAble
         }
 
         _health -= damageInfo.Value;
+
+        OnDamaged?.Invoke();
 
         StopAllCoroutines();
         _idleCoroutine = null;

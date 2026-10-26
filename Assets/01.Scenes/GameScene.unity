@@ -723,7 +723,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1015
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3036,7 +3036,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   _maxHealth: 100
-  _uiHitEffect: {fileID: 1545591482}
 --- !u!114 &1445782030
 MonoBehaviour:
   m_ObjectHideFlags: 0
