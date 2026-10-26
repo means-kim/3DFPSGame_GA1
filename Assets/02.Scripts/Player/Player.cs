@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Player : MonoBehaviour, IDamageAble
 {
@@ -9,6 +10,9 @@ public class Player : MonoBehaviour, IDamageAble
 
     public float MaxHealth => _maxHealth;
     public float Health => _health;
+
+    // Action 자료형 : 함수(들)을 저장할 수 있다.
+    public event Action OnDamaged = null;
 
     [SerializeField] private UI_HitEffect _uiHitEffect;
 
@@ -22,6 +26,8 @@ public class Player : MonoBehaviour, IDamageAble
         if (_health <= 0f) return;
 
         _health -= damageInfo.Value;
+
+        OnDamaged?.Invoke();
 
         _uiHitEffect.Fade(0.4f);
 
