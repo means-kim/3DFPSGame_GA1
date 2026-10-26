@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Lean.Pool;
+using TMPro;
 
 // 마우스 왼쪽 버튼을 누르면 바라보는 방향으로 총알을 발사하고 싶다.
 public class PlayerGunFire : MonoBehaviour
@@ -15,13 +16,25 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private float _damage = 10f; // 공격력
     [SerializeField] private float _fireInterval = 0.1f; // 발사 속도
 
+    [Header("총알 궤적")]
+    [SerializeField] private LineRenderer _shotLineRenderer;
+
+    [SerializeField] private Transform _shotLinePosition;
+    [SerializeField] private float _lineDuration = 0.05f;
+
     private float _fireTimer = 0f;
     private int _bulletCount = 0;
     private Coroutine _reloadCoroutine = null;
+    private Coroutine _lineCoroutine = null;
 
     private void Start()
     {
         _bulletCount = _maxBulletCount;
+
+        _shotLineRenderer.useWorldSpace = true;
+        _shotLineRenderer.positionCount = 2;
+        _shotLineRenderer.loop = false;
+        _shotLineRenderer.enabled = false;
     }
 
     private void Update()
@@ -84,6 +97,10 @@ public class PlayerGunFire : MonoBehaviour
         // 4. 레이를 발사하고, 만일 부딪힌 물체가 있다면 이펙트 표시하기
         bool isHit = Physics.Raycast(ray, out hitInfo, _range); // 3번째 인자는 얼만큼 날라갈 것인지 거리
 
+        Vector3 endPosition = isHit ? hitInfo.point : ray.GetPoint(_range);
+
+        ShowShotLine(endPosition);
+
         if (isHit)
         {
             // Debug.Log($"{hitInfo.collider.name}이 총알을 맞았다. 데미지: {_damage}");
@@ -112,6 +129,43 @@ public class PlayerGunFire : MonoBehaviour
             // hitInfo.collider.GetComponent<Zombie>()?.TakeDamage(_damage);
             // hitInfo.collider.GetComponent<Drum>()?.TakeDamage(_damage);
             // hitInfo.collider.GetComponent<Box>()?.TakeDamage(_damage);
+        }
+    }
+
+    private void ShowShotLine(Vector3 endPosition)
+    {
+        // 이전 발사의 숨김 처리가 새 선을 끄지 않도록 중단한다.
+        if (_lineCoroutine != null)
+        {
+            StopCoroutine(_lineCoroutine);
+        }
+
+        _shotLineRenderer.SetPosition(0, _shotLinePosition.position);
+        _shotLineRenderer.SetPosition(1, endPosition);
+        _shotLineRenderer.enabled = true;
+
+        _lineCoroutine = StartCoroutine(HideShotLine());
+    }
+
+    private IEnumerator HideShotLine()
+    {
+        yield return new WaitForSeconds(_lineDuration);
+
+        _shotLineRenderer.enabled = false;
+        _lineCoroutine = null;
+    }
+
+    private void OnDisable()
+    {
+        if (_lineCoroutine != null)
+        {
+            StopCoroutine(_lineCoroutine);
+            _lineCoroutine = null;
+        }
+
+        if (_shotLineRenderer != null)
+        {
+            _shotLineRenderer.enabled = false;
         }
     }
 }
