@@ -1,0 +1,14 @@
+using UnityEngine;
+
+// 미니맵 카메라: 플레이어 머리 위에서 아래를 내려다 보며 따라다닌다.
+public class MinimapCamera : MonoBehaviour
+{
+    [SerializeField] private Transform _target;
+    [SerializeField] private float _height = 8f;
+
+    private void LateUpdate()
+    {
+        // 1. 대상의 머리 위로 위치를 옮긴다.
+        transform.position = _target.position + (Vector3.up * _height);
+    }
+}
