@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Lean.Pool;
+using System;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -11,8 +12,13 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] private int _maxZombieCount = 10; // 최대 동시 존재할 좀비 수
     [SerializeField] private float _spawnRadius = 10f; // 스포너 반경
 
+    public event Action<int, int> OnZombieCountChanged;
+
     private int _aliveCount = 0;
     private WaitForSeconds _wait;
+
+    public int AliveCount => _aliveCount;
+    public int MaxZombieCount => _maxZombieCount;
 
     private void Start()
     {
@@ -58,13 +64,20 @@ public class ZombieSpawner : MonoBehaviour
 
         zombie.OnDied += HandleZombieDied;
         _aliveCount++;
+
+        NotifyZombieCountChanged();
     }
 
     // 스포너 반경의 랜덤 위치
     private Vector3 GetRandomPosition()
     {
-        Vector2 offset = Random.insideUnitCircle * _spawnRadius;
+        Vector2 offset = UnityEngine.Random.insideUnitCircle * _spawnRadius;
         return transform.position + new Vector3(offset.x, 0f, offset.y);
+    }
+
+    private void NotifyZombieCountChanged()
+    {
+        OnZombieCountChanged?.Invoke(_aliveCount, _maxZombieCount);
     }
 
     // 좀비가 죽으면 구독 해제하고 카운터를 줄인다.
@@ -72,6 +85,8 @@ public class ZombieSpawner : MonoBehaviour
     {
         zombie.OnDied -= HandleZombieDied;
         _aliveCount--;
+
+        NotifyZombieCountChanged();
     }
 
     private void OnDrawGizmos()
