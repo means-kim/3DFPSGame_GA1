@@ -165,6 +165,8 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     private IEnumerator Hit_CoRoutine()
     {
+        StopAgent();
+
         yield return new WaitForSeconds(0.3f); // 잠깐 멈칫 한다!
 
         // 맞았으니 쫓아온다.
@@ -174,12 +176,17 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     private IEnumerator Death_CoRoutine()
     {
+        StopAgent();
+
         yield return new WaitForSeconds(0.5f);
+
         LeanPool.Despawn(gameObject);
     }
 
     private IEnumerator Idle_CoRoutine()
     {
+        StopAgent();
+
         yield return new WaitForSeconds(1f);
 
         if (_state == ZombieState.Idle)
@@ -195,6 +202,8 @@ public class Zombie : MonoBehaviour, IDamageAble
     private void Idle()
     {
         // Todo. Idle 애니메이션 실행
+
+        StopAgent();
 
         // 플레이어와 가까워 지면 Trace 상태로 전이한다.
         float distance = Vector3.Distance(transform.position, _player.transform.position);
@@ -255,13 +264,18 @@ public class Zombie : MonoBehaviour, IDamageAble
         // transform.forward = direction;
         // _controller.SimpleMove(direction * _moveSpeed);
 
+        // setDestination은 목적지 설정
+        // - 호출할 때마다 목적지를 향해 조금씩 이동 (X)
+        // - 한 번 세팅하면 내부에서 계속해서 이동 (O)
         _agent.SetDestination(_player.transform.position);
     }
 
     // 복귀: 처음 자리로 돌아간다.
     private void Comback()
     {
-        if (Vector3.Distance(transform.position, _startPosition) < 1f)
+        if (Vector3.Distance(transform.position, _startPosition) < _agent.stoppingDistance)
+            // if (_agent.remainingDistance <= _agent.stoppingDistance)
+            // if (_agent.pathStatus == NavMeshPathStatus.PathComplete)    
         {
             Debug.Log($"{_state} -> Idle");
             _state = ZombieState.Idle;
@@ -281,6 +295,8 @@ public class Zombie : MonoBehaviour, IDamageAble
     // 공격: 일정 시간마다 플레이어를 때린다.
     private void Attack()
     {
+        StopAgent();
+
         // 플레이어가 공격 사정거리 밖으로 나가면 쫓아!
         float distance = Vector3.Distance(transform.position, _player.transform.position);
 
@@ -331,5 +347,11 @@ public class Zombie : MonoBehaviour, IDamageAble
 
         direction.Normalize();
         transform.forward = direction;
+    }
+
+    private void StopAgent()
+    {
+        _agent.ResetPath(); // 에이전트의 목적지 삭제
+        _agent.velocity = Vector3.zero; // 미끄럼 방지를 위해 가속도 제로
     }
 }
