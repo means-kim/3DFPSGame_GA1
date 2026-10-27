@@ -36,6 +36,10 @@ public class Zombie : MonoBehaviour, IDamageAble
     [SerializeField] private Vector3 _patrolOffset = new Vector3(-5f, 0f, 0f);
     [SerializeField] private float _attackDamage = 10f;
 
+    [Header("점프")]
+    [SerializeField] private float _jumpHeight = 1.5f; // 포물선의 최고 높이
+    [SerializeField] private float _jumpSpeed = 6f; // 점프 구간의 수평 이동 속도
+
     [Header("이펙트")]
     [SerializeField] private GameObject _bloodSprayPrefab;
 
@@ -47,6 +51,7 @@ public class Zombie : MonoBehaviour, IDamageAble
     private ZombieState _state = ZombieState.Idle;
     private Coroutine _idleCoroutine;
     private NavMeshAgent _agent;
+    private bool _isJumping = false;
 
     public event Action OnDamaged = null;
     public event Action<Zombie> OnDied = null;
@@ -60,6 +65,9 @@ public class Zombie : MonoBehaviour, IDamageAble
         // 길을 찾아 걷게 해주는 컴포넌트 NavMeshAgent를 찾아서 참조
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
+
+        // 링크 구간은 에이전트가 직선으로 통과하지 않고 직접 포물선으로 이동시킨다.
+        _agent.autoTraverseOffMeshLink = false;
     }
 
     private void Start()
@@ -71,6 +79,7 @@ public class Zombie : MonoBehaviour, IDamageAble
     {
         _health = _maxHealth;
         _state = ZombieState.Idle;
+        _isJumping = false;
 
         _idleCoroutine = null;
         _attackTimer = 0f;
@@ -99,6 +108,15 @@ public class Zombie : MonoBehaviour, IDamageAble
     private void Update()
     {
         if (GameManager.Instance.State != GameState.Playing) return;
+
+        // 점프 중에는 상태 로직이 에이전트를 건드리지 않도록 막는다.
+        if (_isJumping) return;
+
+        if (_state != ZombieState.Death && _agent.isOnOffMeshLink)
+        {
+            StartCoroutine(Jump_CoRoutine());
+            return;
+        }
 
         switch (_state)
         {
@@ -136,6 +154,9 @@ public class Zombie : MonoBehaviour, IDamageAble
 
         OnDamaged?.Invoke();
 
+        // 점프 중 피격은 체력만 깎고, 멈칫(Hit)으로 점프가 끊기지 않게 한다.
+        if (_isJumping && _health > 0f) return;
+
         StopAllCoroutines();
         _idleCoroutine = null;
 
@@ -160,6 +181,13 @@ public class Zombie : MonoBehaviour, IDamageAble
             Debug.Log($"{_state} -> Death");
             _animator.SetTrigger("Death");
             _state = ZombieState.Death;
+
+            // 점프 중 사망하면 코루틴이 끊기므로 링크 통과를 직접 마무리한다.
+            if (_isJumping)
+            {
+                _isJumping = false;
+                _agent.CompleteOffMeshLink();
+            }
 
             OnDied?.Invoke(this); // 죽음이 확정되는 순간 스포너에게 알린다.
 
@@ -359,6 +387,42 @@ public class Zombie : MonoBehaviour, IDamageAble
         }
 
         _agent.SetDestination(_patrolPosition);
+    }
+
+    // 링크 구간을 포물선으로 통과한다.
+    private IEnumerator Jump_CoRoutine()
+    {
+        _isJumping = true;
+
+        Vector3 startPosition = transform.position;
+        Vector3 endPosition = _agent.currentOffMeshLinkData.endPos + Vector3.up * _agent.baseOffset;
+
+        Vector3 flatDirection = endPosition - startPosition;
+        flatDirection.y = 0f;
+
+        if (flatDirection.sqrMagnitude > 0.001f)
+        {
+            transform.forward = flatDirection.normalized;
+        }
+
+        float duration = Mathf.Max(0.1f, flatDirection.magnitude / _jumpSpeed);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            // 직선 보간에 4h·t(1-t)를 더하면 t=0.5에서 최고 높이 h인 포물선이 된다.
+            float arc = 4f * _jumpHeight * t * (1f - t);
+            transform.position = Vector3.Lerp(startPosition, endPosition, t) + Vector3.up * arc;
+
+            yield return null;
+        }
+
+        transform.position = endPosition;
+        _agent.CompleteOffMeshLink();
+        _isJumping = false;
     }
 
     private void StopAgent()
