@@ -350,15 +350,15 @@ public class Zombie : MonoBehaviour, IDamageAble
         Vector3 direction = _patrolPosition - transform.position;
         direction.y = 0f;
 
-        if (direction.magnitude < 0.3f)
+        // 에이전트는 stoppingDistance 앞에서 멈추므로 도착 판정도 그보다 크게 잡는다.
+        if (direction.magnitude <= _agent.stoppingDistance + 0.1f)
         {
             Debug.Log($"{_state} -> Comeback");
             _state = ZombieState.Comeback;
             return;
         }
 
-        direction.Normalize();
-        transform.forward = direction;
+        _agent.SetDestination(_patrolPosition);
     }
 
     private void StopAgent()
