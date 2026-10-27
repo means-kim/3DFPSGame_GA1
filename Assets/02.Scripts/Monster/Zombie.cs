@@ -151,6 +151,7 @@ public class Zombie : MonoBehaviour, IDamageAble
 
             // 잠깐 멈칫 하고 싶다!
             Debug.Log($"{_state} -> Hit");
+            _animator.SetTrigger("Hit");
             _state = ZombieState.Hit;
             StartCoroutine(Hit_CoRoutine());
         }
@@ -170,7 +171,7 @@ public class Zombie : MonoBehaviour, IDamageAble
     {
         StopAgent();
 
-        yield return new WaitForSeconds(0.3f); // 잠깐 멈칫 한다!
+        yield return new WaitForSeconds(0.5f); // 잠깐 멈칫 한다!
 
         // 맞았으니 쫓아온다.
         Debug.Log($"{_state} -> Trace");
