@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Lean.Pool;
 using System;
+using UnityEngine.AI;
 
 // FSM(유한 상태 머신) : 유한개의 상태가 있고, 상태마다 행동을 다르게 함으로써 AI를 구현하는 유명한 방법
 // - 상태: 객체가 가질 수 있는 어떤 조건이나 상황
@@ -20,6 +21,7 @@ public enum ZombieState
     Patrol, // 순찰: 두 지점을 오가면서 순찰한다.
 }
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Zombie : MonoBehaviour, IDamageAble
 {
     [Header("스탯")]
@@ -39,12 +41,12 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     private Vector3 _patrolPosition;
     private float _attackTimer = 0f;
-    private CharacterController _controller;
     private Vector3 _startPosition;
     private GameObject _player;
 
     private ZombieState _state = ZombieState.Idle;
     private Coroutine _idleCoroutine;
+    private NavMeshAgent _agent;
 
     public event Action OnDamaged = null;
     public event Action<Zombie> OnDied = null;
@@ -54,7 +56,13 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        // 길을 찾아 걷게 해주는 컴포넌트 NavMeshAgent를 찾아서 참조
+        _agent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
+    {
+        _agent.speed = _moveSpeed;
     }
 
     private void OnEnable()
@@ -64,7 +72,6 @@ public class Zombie : MonoBehaviour, IDamageAble
 
         _idleCoroutine = null;
         _attackTimer = 0f;
-        _controller.enabled = true; // 죽을 때 끈 컨트롤러를 다시 켠다.
 
         _startPosition = transform.position;
         _patrolPosition = _startPosition + _patrolOffset;
@@ -81,9 +88,7 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     public void Setup(Vector3 position)
     {
-        _controller.enabled = false;
         transform.position = position;
-        _controller.enabled = true;
 
         _startPosition = position;
         _patrolPosition = _startPosition + _patrolOffset;
@@ -169,7 +174,6 @@ public class Zombie : MonoBehaviour, IDamageAble
 
     private IEnumerator Death_CoRoutine()
     {
-        _controller.enabled = false;
         yield return new WaitForSeconds(0.5f);
         LeanPool.Despawn(gameObject);
     }
@@ -244,12 +248,14 @@ public class Zombie : MonoBehaviour, IDamageAble
             return;
         }
 
-        Vector3 direction = _player.transform.position - transform.position;
-        direction.y = 0f;
-        direction.Normalize();
+        // Vector3 direction = _player.transform.position - transform.position;
+        // direction.y = 0f;
+        // direction.Normalize();
 
-        transform.forward = direction;
-        _controller.SimpleMove(direction * _moveSpeed);
+        // transform.forward = direction;
+        // _controller.SimpleMove(direction * _moveSpeed);
+
+        _agent.SetDestination(_player.transform.position);
     }
 
     // 복귀: 처음 자리로 돌아간다.
@@ -262,12 +268,14 @@ public class Zombie : MonoBehaviour, IDamageAble
             return;
         }
 
-        Vector3 direction = _startPosition - transform.position;
-        direction.y = 0f;
-        direction.Normalize();
+        // Vector3 direction = _startPosition - transform.position;
+        // direction.y = 0f;
+        // direction.Normalize();
+        //
+        // transform.forward = direction;
+        // _controller.SimpleMove(direction * _moveSpeed);
 
-        transform.forward = direction;
-        _controller.SimpleMove(direction * _moveSpeed);
+        _agent.SetDestination(_startPosition);
     }
 
     // 공격: 일정 시간마다 플레이어를 때린다.
@@ -323,6 +331,5 @@ public class Zombie : MonoBehaviour, IDamageAble
 
         direction.Normalize();
         transform.forward = direction;
-        _controller.SimpleMove(direction * _moveSpeed);
     }
 }
