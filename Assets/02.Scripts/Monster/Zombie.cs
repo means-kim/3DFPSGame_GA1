@@ -157,6 +157,7 @@ public class Zombie : MonoBehaviour, IDamageAble
         else
         {
             Debug.Log($"{_state} -> Death");
+            _animator.SetTrigger("Death");
             _state = ZombieState.Death;
 
             OnDied?.Invoke(this); // 죽음이 확정되는 순간 스포너에게 알린다.
@@ -180,7 +181,7 @@ public class Zombie : MonoBehaviour, IDamageAble
     {
         StopAgent();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
 
         LeanPool.Despawn(gameObject);
     }
@@ -317,18 +318,23 @@ public class Zombie : MonoBehaviour, IDamageAble
         {
             _animator.SetTrigger("StartAttack");
 
-            DamageInfo damageInfo = new DamageInfo()
-            {
-                Value = _attackDamage,
-                HitPoint = _player.transform.position,
-                HitNormal = (transform.position - _player.transform.position).normalized,
-            };
-
-            _player.GetComponent<IDamageAble>()?.TakeDamage(damageInfo);
-
-            Debug.Log("플레이어를 때렸습니다.");
-            _attackTimer = 0f;
+            // AttackAction();
         }
+    }
+
+    public void AttackAction()
+    {
+        DamageInfo damageInfo = new DamageInfo()
+        {
+            Value = _attackDamage,
+            HitPoint = _player.transform.position,
+            HitNormal = (transform.position - _player.transform.position).normalized,
+        };
+
+        _player.GetComponent<IDamageAble>()?.TakeDamage(damageInfo);
+
+        Debug.Log("플레이어를 때렸습니다.");
+        _attackTimer = 0f;
     }
 
     private void Patrol()
