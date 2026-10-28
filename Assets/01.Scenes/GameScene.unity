@@ -492,6 +492,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159608793}
   m_CullTransparentMesh: 1
+--- !u!95 &191192250 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5805844507980931286, guid: 3f42c4f76a36a5643a8353aaf49a07e1, type: 3}
+  m_PrefabInstance: {fileID: 6466326815067335773}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &233493625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4508,6 +4513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _stateText: {fileID: 159608795}
+  _PlayerAnimator: {fileID: 191192250}
 --- !u!4 &1887714483
 Transform:
   m_ObjectHideFlags: 0
