@@ -17,8 +17,28 @@ public class PlayerBombFire : MonoBehaviour
 
     [SerializeField] private float _maxChargeTime = 2f;
 
+    [Header("던지기 애니메이션")]
+    [SerializeField] private int _throwHoldFrame = 16;    // 차징 중 멈출 프레임
+    [SerializeField] private int _throwTotalFrames = 66;  // Throw 클립의 전체 프레임 수
+    [SerializeField] private string _fireLayerName = "Fire Layer";
+
+    private static readonly int ThrowHash = Animator.StringToHash("Throw");
+    private static readonly int ThrowSpeedHash = Animator.StringToHash("ThrowSpeed");
+    private const string ThrowStateName = "Throw";
+
     private int _currentBomb = 0;
     private float _chargeTime = 0f;
+
+    private Animator _animator;
+    private int _fireLayerIndex;
+    private float _holdNormalizedTime;
+
+    private void Awake()
+    {
+        _animator = GetComponentInChildren<Animator>();
+        _fireLayerIndex = _animator.GetLayerIndex(_fireLayerName);
+        _holdNormalizedTime = (float)_throwHoldFrame / _throwTotalFrames;
+    }
 
     private void Update()
     {
@@ -28,17 +48,49 @@ public class PlayerBombFire : MonoBehaviour
         if (Input.GetButtonDown("Fire2"))
         {
             _chargeTime = 0f;
+
+            // 남은 수류탄이 있을 때만 상체 던지기 애니메이션을 시작한다.
+            if (_currentBomb < _maxBomb)
+            {
+                _animator.SetFloat(ThrowSpeedHash, 1f);
+                _animator.SetTrigger(ThrowHash);
+            }
         }
 
         if (Input.GetButton("Fire2"))
         {
             _chargeTime += Time.deltaTime;
+
+            // 차징 중에는 지정한 프레임에서 애니메이션을 멈춘다.
+            if (_animator.GetFloat(ThrowSpeedHash) > 0f && HasReachedHoldFrame())
+            {
+                _animator.SetFloat(ThrowSpeedHash, 0f);
+            }
         }
 
         if (Input.GetButtonUp("Fire2"))
         {
+            // 버튼을 놓으면 멈춘 지점부터 이후 애니메이션을 재생한다.
+            _animator.SetFloat(ThrowSpeedHash, 1f);
             Shoot();
         }
+    }
+
+    // Throw 상태가 멈출 프레임까지 재생됐는지 확인한다.
+    private bool HasReachedHoldFrame()
+    {
+        AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(_fireLayerIndex);
+
+        // 전환 중에는 현재 상태가 아직 이전 상태이므로 다음 상태를 확인한다.
+        if (!info.IsName(ThrowStateName))
+        {
+            if (!_animator.IsInTransition(_fireLayerIndex)) return false;
+
+            info = _animator.GetNextAnimatorStateInfo(_fireLayerIndex);
+            if (!info.IsName(ThrowStateName)) return false;
+        }
+
+        return info.normalizedTime >= _holdNormalizedTime;
     }
 
     private void Shoot()
