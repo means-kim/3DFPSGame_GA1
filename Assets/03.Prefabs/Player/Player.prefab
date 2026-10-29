@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 2326776359177104527}
   - component: {fileID: 5251650154772852160}
   - component: {fileID: 3860358422856732385}
+  - component: {fileID: 1606517178444444881}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -464,6 +465,9 @@ MonoBehaviour:
   _maxThrowPower: 30
   _maxBomb: 10
   _maxChargeTime: 2
+  _throwHoldFrame: 16
+  _throwTotalFrames: 66
+  _fireLayerName: Fire Layer
 --- !u!136 &2326776359177104527
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -514,6 +518,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_PlayerStats
   _healthSlider: {fileID: 0}
   _staminaSlider: {fileID: 0}
+--- !u!114 &1606517178444444881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7103457408446982959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49370c2697ce645845db0e52e41a58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerZoom
 --- !u!1 &7346230948149094407
 GameObject:
   m_ObjectHideFlags: 0
