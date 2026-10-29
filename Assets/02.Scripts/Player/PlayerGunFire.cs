@@ -23,6 +23,9 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private Transform _shotLinePosition;
     [SerializeField] private float _lineDuration = 0.05f;
 
+    [SerializeField] private GameObject[] _muzzleFlashes;
+    [SerializeField] private float _flashTime = 0.05f;
+
     private float _fireTimer = 0f;
     private int _bulletCount = 0;
     private Coroutine _reloadCoroutine = null;
@@ -108,6 +111,7 @@ public class PlayerGunFire : MonoBehaviour
 
     private void Shoot()
     {
+        StartCoroutine(MuzzleFlash_Coroutine());
         // Ray : 레이저 (시작위치, 날아갈 방향)
         // Physics.RayCast : 레이저를 발사
         // RayCastHit : 레이저가 물체와 부딪히면 그 정보를 저장하는 구조체
@@ -192,5 +196,16 @@ public class PlayerGunFire : MonoBehaviour
         {
             _shotLineRenderer.enabled = false;
         }
+    }
+
+    private IEnumerator MuzzleFlash_Coroutine()
+    {
+        int randomIndex = UnityEngine.Random.Range(0, _muzzleFlashes.Length);
+        GameObject flash = _muzzleFlashes[randomIndex];
+        flash.SetActive(true);
+
+        yield return new WaitForSeconds(_flashTime);
+
+        flash.SetActive(false);
     }
 }
