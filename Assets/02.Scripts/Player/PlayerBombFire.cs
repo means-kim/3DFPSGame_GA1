@@ -18,8 +18,9 @@ public class PlayerBombFire : MonoBehaviour
     [SerializeField] private float _maxChargeTime = 2f;
 
     [Header("던지기 애니메이션")]
-    [SerializeField] private int _throwHoldFrame = 16;    // 차징 중 멈출 프레임
-    [SerializeField] private int _throwTotalFrames = 66;  // Throw 클립의 전체 프레임 수
+    [SerializeField] private int _throwHoldFrame = 16; // 차징 중 멈출 프레임
+
+    [SerializeField] private int _throwTotalFrames = 66; // Throw 클립의 전체 프레임 수
     [SerializeField] private string _fireLayerName = "Fire Layer";
 
     private static readonly int ThrowHash = Animator.StringToHash("Throw");
@@ -33,11 +34,14 @@ public class PlayerBombFire : MonoBehaviour
     private int _fireLayerIndex;
     private float _holdNormalizedTime;
 
+    private Player _player;
+
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
         _fireLayerIndex = _animator.GetLayerIndex(_fireLayerName);
         _holdNormalizedTime = (float)_throwHoldFrame / _throwTotalFrames;
+        _player = GetComponent<Player>();
     }
 
     private void Update()
@@ -68,7 +72,7 @@ public class PlayerBombFire : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("Fire2"))
+        if (Input.GetButtonUp("Fire2") && _player.WeaponMode == WeaponMode.Normal)
         {
             // 버튼을 놓으면 멈춘 지점부터 이후 애니메이션을 재생한다.
             _animator.SetFloat(ThrowSpeedHash, 1f);

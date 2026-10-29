@@ -17,11 +17,27 @@ public class Player : MonoBehaviour, IDamageAble
     private Animator _animator;
     private int _injuredLayerIndex;
 
+    private WeaponMode _weaponMode = WeaponMode.Normal;
+    public WeaponMode WeaponMode => _weaponMode;
+
     private void Awake()
     {
         _health = _maxHealth;
         _animator = GetComponentInChildren<Animator>();
         _injuredLayerIndex = _animator.GetLayerIndex("Injured Layer");
+    }
+
+    private void Update()
+    {
+        // 숫자 키 1은 일반모드, 2는 저격모드
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _weaponMode = WeaponMode.Normal;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            _weaponMode = WeaponMode.Sniper;
+        }
     }
 
     public void TakeDamage(DamageInfo damageInfo)
