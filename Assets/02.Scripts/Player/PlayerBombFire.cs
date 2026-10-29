@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Lean.Pool;
 
@@ -38,6 +39,9 @@ public class PlayerBombFire : MonoBehaviour
 
     // 남은 폭탄 개수 (_currentBomb은 던진 개수)
     public int RemainBomb => _maxBomb - _currentBomb;
+
+    // 남은 폭탄 개수가 바뀔 때 알린다.
+    public event Action<int> OnBombChanged = null;
 
     private void Awake()
     {
@@ -120,6 +124,7 @@ public class PlayerBombFire : MonoBehaviour
             rigidbody.AddForce(Camera.main.transform.forward * power, ForceMode.Impulse);
 
             _currentBomb++;
+            OnBombChanged?.Invoke(RemainBomb);
         }
     }
 }

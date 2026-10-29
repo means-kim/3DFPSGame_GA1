@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Lean.Pool;
@@ -32,6 +33,9 @@ public class PlayerGunFire : MonoBehaviour
     public int BulletCount => _bulletCount;
     public int MaxBulletCount => _maxBulletCount;
 
+    // 총알 개수가 바뀔 때 (현재, 최대)를 알린다.
+    public event Action<int, int> OnBulletChanged = null;
+
     private void Awake()
     {
         _bulletCount = _maxBulletCount;
@@ -57,7 +61,7 @@ public class PlayerGunFire : MonoBehaviour
         bool isMouseVisible = Cursor.visible;
         if (!isMouseVisible && Input.GetButton("Fire1") && _fireTimer <= 0f && _bulletCount > 0) // 0 ~ 2 사이
         {
-            _bulletCount--;
+            SetBulletCount(_bulletCount - 1);
             _fireTimer = _fireInterval;
             Shoot();
 
@@ -90,10 +94,16 @@ public class PlayerGunFire : MonoBehaviour
         Debug.Log("재장전 시작!");
 
         yield return new WaitForSeconds(_reloadingTime);
-        _bulletCount = _maxBulletCount;
+        SetBulletCount(_maxBulletCount);
 
         Debug.Log("재장전 완료!");
         _reloadCoroutine = null;
+    }
+
+    private void SetBulletCount(int value)
+    {
+        _bulletCount = value;
+        OnBulletChanged?.Invoke(_bulletCount, _maxBulletCount);
     }
 
     private void Shoot()

@@ -20,6 +20,8 @@ public class Player : MonoBehaviour, IDamageAble
     private WeaponMode _weaponMode = WeaponMode.Normal;
     public WeaponMode WeaponMode => _weaponMode;
 
+    public event Action<WeaponMode> OnWeaponModeChanged = null;
+
     private void Awake()
     {
         _health = _maxHealth;
@@ -34,12 +36,20 @@ public class Player : MonoBehaviour, IDamageAble
         // 숫자 키 1은 일반모드, 2는 저격모드
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _weaponMode = WeaponMode.Normal;
+            SetWeaponMode(WeaponMode.Normal);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            _weaponMode = WeaponMode.Sniper;
+            SetWeaponMode(WeaponMode.Sniper);
         }
+    }
+
+    private void SetWeaponMode(WeaponMode mode)
+    {
+        if (_weaponMode == mode) return;
+
+        _weaponMode = mode;
+        OnWeaponModeChanged?.Invoke(_weaponMode);
     }
 
     public void TakeDamage(DamageInfo damageInfo)

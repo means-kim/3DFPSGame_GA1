@@ -23,12 +23,6 @@ public class UI_PlayerWeapons : MonoBehaviour
 
     [SerializeField] private Sprite _sniperSprite;
 
-    // 값이 바뀔 때만 텍스트를 갱신하기 위한 이전 값
-    private WeaponMode? _lastMode = null;
-    private int _lastBullet = -1;
-    private int _lastMaxBullet = -1;
-    private int _lastBomb = -1;
-
     private void Awake()
     {
         if (_player == null) _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -36,38 +30,42 @@ public class UI_PlayerWeapons : MonoBehaviour
         if (_bombFire == null) _bombFire = _player.GetComponent<PlayerBombFire>();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        RefreshMode();
-        RefreshMagazine();
-        RefreshBomb();
+        _player.OnWeaponModeChanged += RefreshMode;
+        _gunFire.OnBulletChanged += RefreshMagazine;
+        _bombFire.OnBombChanged += RefreshBomb;
     }
 
-    private void RefreshMode()
+    private void OnDisable()
     {
-        if (_lastMode == _player.WeaponMode) return;
+        _player.OnWeaponModeChanged -= RefreshMode;
+        _gunFire.OnBulletChanged -= RefreshMagazine;
+        _bombFire.OnBombChanged -= RefreshBomb;
+    }
 
-        _lastMode = _player.WeaponMode;
+    // 이벤트는 값이 바뀔 때만 오므로 초기 표시는 직접 한 번 그린다.
+    private void Start()
+    {
+        RefreshMode(_player.WeaponMode);
+        RefreshMagazine(_gunFire.BulletCount, _gunFire.MaxBulletCount);
+        RefreshBomb(_bombFire.RemainBomb);
+    }
 
-        bool isSniper = _lastMode == WeaponMode.Sniper;
+    private void RefreshMode(WeaponMode mode)
+    {
+        bool isSniper = mode == WeaponMode.Sniper;
         _weaponModeText.text = isSniper ? "저격 모드" : "일반 모드";
         _weaponIcon.sprite = isSniper ? _sniperSprite : _normalSprite;
     }
 
-    private void RefreshMagazine()
+    private void RefreshMagazine(int current, int max)
     {
-        if (_lastBullet == _gunFire.BulletCount && _lastMaxBullet == _gunFire.MaxBulletCount) return;
-
-        _lastBullet = _gunFire.BulletCount;
-        _lastMaxBullet = _gunFire.MaxBulletCount;
-        _magazineText.text = $"{_lastBullet} / {_lastMaxBullet}";
+        _magazineText.text = $"{current} / {max}";
     }
 
-    private void RefreshBomb()
+    private void RefreshBomb(int remain)
     {
-        if (_lastBomb == _bombFire.RemainBomb) return;
-
-        _lastBomb = _bombFire.RemainBomb;
-        _bombText.text = $"폭탄 {_lastBomb}";
+        _bombText.text = $"폭탄 {remain}";
     }
 }
