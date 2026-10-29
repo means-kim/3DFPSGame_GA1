@@ -36,6 +36,9 @@ public class PlayerBombFire : MonoBehaviour
 
     private Player _player;
 
+    // 남은 폭탄 개수 (_currentBomb은 던진 개수)
+    public int RemainBomb => _maxBomb - _currentBomb;
+
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();

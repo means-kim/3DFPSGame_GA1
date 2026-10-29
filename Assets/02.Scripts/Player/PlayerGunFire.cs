@@ -29,6 +29,9 @@ public class PlayerGunFire : MonoBehaviour
 
     private Animator _animator;
 
+    public int BulletCount => _bulletCount;
+    public int MaxBulletCount => _maxBulletCount;
+
     private void Awake()
     {
         _bulletCount = _maxBulletCount;
