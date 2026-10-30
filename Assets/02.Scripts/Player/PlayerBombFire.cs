@@ -55,6 +55,18 @@ public class PlayerBombFire : MonoBehaviour
     {
         if (GameManager.Instance.State != GameState.Playing) return;
 
+        // 수류탄 던지기(애니메이션 포함)는 일반 모드에서만 가능하다.
+        if (_player.WeaponMode != WeaponMode.Normal)
+        {
+            // 차징 중 모드가 바뀌면 멈춰 있던 던지기 애니메이션을 다시 재생시킨다.
+            if (_animator.GetFloat(ThrowSpeedHash) <= 0f)
+            {
+                _animator.SetFloat(ThrowSpeedHash, 1f);
+            }
+
+            return;
+        }
+
         // 1. 마우스 오른쪽 버튼 입력 받기
         if (Input.GetButtonDown("Fire2"))
         {
@@ -79,7 +91,7 @@ public class PlayerBombFire : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("Fire2") && _player.WeaponMode == WeaponMode.Normal)
+        if (Input.GetButtonUp("Fire2"))
         {
             // 버튼을 놓으면 멈춘 지점부터 이후 애니메이션을 재생한다.
             _animator.SetFloat(ThrowSpeedHash, 1f);
