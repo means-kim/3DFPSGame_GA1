@@ -3317,6 +3317,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1376016247}
   m_CullTransparentMesh: 1
+--- !u!65 &1393150695 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 5332097056337511153, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
+  m_PrefabInstance: {fileID: 1712418218}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1394121932
 GameObject:
   m_ObjectHideFlags: 0
@@ -4576,6 +4581,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 377967779537408546, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
+      propertyPath: _katanaCollider
+      value: 
+      objectReference: {fileID: 1393150695}
     - target: {fileID: 1606517178444444881, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
       propertyPath: _sniperZoom
       value: 
