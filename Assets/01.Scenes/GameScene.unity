@@ -2076,6 +2076,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2bd33d84effce43b44326fb8ae59c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGunFire
+--- !u!4 &864484670 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2457305647518172013, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
+  m_PrefabInstance: {fileID: 1712418218}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &891674456
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,7 +2533,7 @@ GameObject:
   - component: {fileID: 1003894002}
   - component: {fileID: 1003894001}
   - component: {fileID: 1003894000}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3575,11 +3580,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1091398173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1445782022 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2457305647518172013, guid: 3f42c4f76a36a5643a8353aaf49a07e1, type: 3}
-  m_PrefabInstance: {fileID: 6466326815067335773}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1462945594
 GameObject:
   m_ObjectHideFlags: 0
@@ -4739,6 +4739,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 2221030060688459332, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
+      propertyPath: _meleeHitMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2221030060688459332, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
+      propertyPath: _targetMask.m_Bits
+      value: 768
+      objectReference: {fileID: 0}
     - target: {fileID: 2349014862978189839, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -5400,7 +5408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eff353baabf29d40be9c60a50a6543a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MinimapCamera
-  _target: {fileID: 1445782022}
+  _target: {fileID: 864484670}
   _height: 8
 --- !u!1 &1887714481
 GameObject:
