@@ -2042,23 +2042,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &864484658 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7103457408446982959, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
-  m_PrefabInstance: {fileID: 1712418218}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &864484671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 864484658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab83d606cce93af4ab5e81997f0d5b7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMeleeAttack
 --- !u!1 &891674456
 GameObject:
   m_ObjectHideFlags: 0
@@ -4652,10 +4635,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7103457408446982959, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 864484671}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d939cf9220b2e2047a8767e593b5dcce, type: 3}
 --- !u!1 &1726792695
 GameObject:
