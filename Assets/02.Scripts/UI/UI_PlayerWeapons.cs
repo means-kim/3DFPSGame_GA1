@@ -22,6 +22,7 @@ public class UI_PlayerWeapons : MonoBehaviour
     [SerializeField] private Sprite _normalSprite;
 
     [SerializeField] private Sprite _sniperSprite;
+    [SerializeField] private Sprite _katanaSprite;
 
     private void Awake()
     {
@@ -54,9 +55,27 @@ public class UI_PlayerWeapons : MonoBehaviour
 
     private void RefreshMode(WeaponMode mode)
     {
-        bool isSniper = mode == WeaponMode.Sniper;
-        _weaponModeText.text = isSniper ? "저격 모드" : "일반 모드";
-        _weaponIcon.sprite = isSniper ? _sniperSprite : _normalSprite;
+        switch (mode)
+        {
+            case WeaponMode.Normal:
+                _weaponModeText.text = "일반 모드";
+                _weaponIcon.sprite = _normalSprite;
+                break;
+
+            case WeaponMode.Sniper:
+                _weaponModeText.text = "저격 모드";
+                _weaponIcon.sprite = _sniperSprite;
+                break;
+
+            case WeaponMode.Melee:
+                _weaponModeText.text = "근접 모드";
+                _weaponIcon.sprite = _katanaSprite;
+                break;
+        }
+
+        // bool isSniper = mode == WeaponMode.Sniper;
+        // _weaponModeText.text = isSniper ? "저격 모드" : "일반 모드";
+        // _weaponIcon.sprite = isSniper ? _sniperSprite : _normalSprite;
     }
 
     private void RefreshMagazine(int current, int max)
