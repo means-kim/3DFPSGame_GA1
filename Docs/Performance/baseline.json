@@ -1,0 +1,28 @@
+{
+  "label": "before (최적화 전)",
+  "date": "2026-10-30",
+  "scene": "Assets/01.Scenes/GameScene.unity",
+  "method": {
+    "description": "Play 모드 진입 직후 Time.timeScale=0으로 정지(GameState=Ready 유지, 좀비 스폰/이동 없음), Main Camera의 CameraFollow/CameraRotate를 런타임에만 끄고 고정 시점에 배치. 시점마다 300프레임 동안 ProfilerRecorder 값을 프레임별로 수집하고 앞 30프레임은 버림. 카운터는 중앙값, 메인 스레드 시간은 평균/중앙값/P95.",
+    "counters": "Render 카테고리 ProfilerRecorder (Draw Calls/Batches/SetPass Calls/Triangles/Vertices/Shadow Casters/Visible Skinned Meshes Count), Internal 'Main Thread'",
+    "note": "카운터는 Game 뷰에 그려지는 모든 카메라(Main + Minimap)와 그림자 패스를 포함한 프레임 전체 값. 메인 스레드 시간은 에디터 오버헤드가 포함되어 오차가 큼.",
+    "gameViewSize": "753x386 (Game 뷰 창 크기)",
+    "qualityLevel": "PC",
+    "lodBias": 2,
+    "meshLodThreshold": 1
+  },
+  "views": {
+    "A": { "desc": "플레이어 시작 위치 1인칭(Player2 바로 옆)", "pos": [0, 1.6, 0], "rot": [5, 90, 0],
+      "drawCalls": 697, "batches": 258, "setPass": 75, "triangles": 3659278, "vertices": 2507552, "shadowCasters": 433, "visibleSkinned": 29,
+      "mainThreadMsAvg": 12.94, "mainThreadMsMedian": 12.86, "mainThreadMsP95": 14.20 },
+    "B": { "desc": "서쪽 도로에서 건물 쪽을 보는 시점(가림 많음)", "pos": [-19.7, 1.6, -25.8], "rot": [5, 90, 0],
+      "drawCalls": 742, "batches": 263, "setPass": 77, "triangles": 181077, "vertices": 304860, "shadowCasters": 390, "visibleSkinned": 29,
+      "mainThreadMsAvg": 13.48, "mainThreadMsMedian": 13.39, "mainThreadMsP95": 14.66 },
+    "C": { "desc": "남서쪽 도로 끝에서 맵 대각선 방향(넓은 시야)", "pos": [-24.4, 1.6, -61.7], "rot": [5, 45, 0],
+      "drawCalls": 901, "batches": 364, "setPass": 76, "triangles": 2220100, "vertices": 1616446, "shadowCasters": 258, "visibleSkinned": 29,
+      "mainThreadMsAvg": 13.25, "mainThreadMsMedian": 12.96, "mainThreadMsP95": 15.38 },
+    "D": { "desc": "맵 남쪽 상공 조감(가림 거의 없음, 대조군)", "pos": [24.4, 60, -100], "rot": [35, 0, 0],
+      "drawCalls": 816, "batches": 328, "setPass": 69, "triangles": 2195681, "vertices": 1575948, "shadowCasters": 84, "visibleSkinned": 29,
+      "mainThreadMsAvg": 12.67, "mainThreadMsMedian": 12.67, "mainThreadMsP95": 13.66 }
+  }
+}

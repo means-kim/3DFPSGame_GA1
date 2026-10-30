@@ -1,0 +1,21 @@
+{
+  "label": "after (오클루전 컬링 + LOD Group + Mesh LOD)",
+  "date": "2026-10-30",
+  "scene": "Assets/01.Scenes/GameScene.unity",
+  "method": "baseline.json과 동일(같은 시점·300프레임 수집·앞 30프레임 버림). 단, after 측정은 Play 진입 직후 GameState가 이미 Playing으로 넘어간 상태에서 정지됨(약 1.9초 진행, 좀비 2마리 동일).",
+  "occlusionOnly": {
+    "A": { "drawCalls": 655, "batches": 251, "setPass": 72, "triangles": 3644035, "vertices": 2483264, "shadowCasters": 425, "mainThreadMsAvg": 11.94, "mainThreadMsMedian": 11.84, "mainThreadMsP95": 13.14 },
+    "B": { "drawCalls": 698, "batches": 263, "setPass": 77, "triangles": 167727, "vertices": 283516, "shadowCasters": 386, "mainThreadMsAvg": 12.57, "mainThreadMsMedian": 12.31, "mainThreadMsP95": 15.22 },
+    "C": { "drawCalls": 862, "batches": 360, "setPass": 76, "triangles": 2211374, "vertices": 1604492, "shadowCasters": 254, "mainThreadMsAvg": 12.30, "mainThreadMsMedian": 12.03, "mainThreadMsP95": 14.99 },
+    "D": { "drawCalls": 812, "batches": 326, "setPass": 69, "triangles": 2194595, "vertices": 1574065, "shadowCasters": 80, "mainThreadMsAvg": 11.91, "mainThreadMsMedian": 11.82, "mainThreadMsP95": 13.11 }
+  },
+  "final": {
+    "A": { "drawCalls": 639, "batches": 249, "setPass": 72, "triangles": 2365927, "vertices": 2222006, "shadowCasters": 401, "visibleSkinned": 29, "mainThreadMsAvg": 10.94, "mainThreadMsMedian": 10.41, "mainThreadMsP95": 13.38 },
+    "B": { "drawCalls": 679, "batches": 250, "setPass": 77, "triangles": 164891, "vertices": 278966, "shadowCasters": 362, "visibleSkinned": 29, "mainThreadMsAvg": 11.25, "mainThreadMsMedian": 11.03, "mainThreadMsP95": 13.17 },
+    "C": { "drawCalls": 813, "batches": 317, "setPass": 76, "triangles": 1208831, "vertices": 980144, "shadowCasters": 238, "visibleSkinned": 29, "mainThreadMsAvg": 10.37, "mainThreadMsMedian": 10.35, "mainThreadMsP95": 11.46 },
+    "D": { "drawCalls": 714, "batches": 263, "setPass": 69, "triangles": 1186693, "vertices": 942442, "shadowCasters": 80, "visibleSkinned": 29, "mainThreadMsAvg": 9.74, "mainThreadMsMedian": 9.61, "mainThreadMsP95": 11.01 }
+  },
+  "diagnostic": {
+    "A_withoutKatana": { "triangles": 365927, "drawCalls": 636, "note": "시점 A에서 Katana(SkinnedMeshRenderer)만 런타임에 끈 값. 최적화 후에도 Katana 하나가 약 2.0M tris를 차지함." }
+  }
+}
