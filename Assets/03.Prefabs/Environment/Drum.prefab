@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d2ba22b6fff2bc45805c3c780980538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drum
-  _explosionEffectPrefab: {fileID: 19800006, guid: 8a4aceaf2957c044480166b429f4c7d0, type: 3}
+  _explosionEffectPrefab: {fileID: 3551596340341534341, guid: 81eca3cd652017244b4e18f26ea38e10, type: 3}
   _health: 30
   _damage: 100
   _launchForce: 20
