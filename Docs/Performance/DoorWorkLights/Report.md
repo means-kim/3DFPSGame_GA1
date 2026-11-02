@@ -26,4 +26,23 @@
 - `compare_A~C.png`: 조명 범위 밖이라 차이가 거의 없다.
 
 ## Stats 비교
-(Stats 창 캡처 후 추가 예정)
+한 번의 Play 모드에서 `DoorWorkLights`를 런타임에만 껐다 켜며 같은 시점을 캡처했다(timeScale 0, 고정 시점).
+
+| 시점 | Batches | SetPass | Shadow casters | CPU main |
+|---|---:|---:|---:|---:|
+| A | 252 → 253 | 71 → 71 | 724 → 724 | 9.0 → 9.5 ms |
+| B | 263 → 262 | 78 → 78 | 632 → 632 | 10.8 → 10.3 ms |
+| C | 393 → 393 | 78 → 78 | 642 → 642 | 9.8 → 9.9 ms |
+| D | 274 → 275 | 71 → 71 | 221 → 221 | 10.8 → 9.8 ms |
+| L (문 앞) | 299 → 297 | 76 → 76 | 676 → 676 | 9.6 → 10.1 ms |
+
+## 해석
+- Spot Light 17개를 추가해도 **Batches, SetPass, Shadow casters가 변하지 않는다.**
+  - Forward+ 렌더러는 조명 수만큼 Draw Call을 늘리지 않는다.
+  - 그림자를 꺼 두어서 그림자 패스도 늘지 않는다.
+- CPU main 차이(±1ms)는 방향이 일정하지 않아 측정 오차로 본다.
+- 실제 비용은 조명이 비추는 픽셀의 셰이딩(GPU)에 있다. Stats 창으로는 보이지 않으므로, 최적화 단계에서 GPU 프로파일러로 확인이 필요하다.
+
+## 파일
+- 화면: `before_*.png` / `after_*.png`, `compare_*.png` (A~D, L_door_v4, M_door_v2)
+- Stats: `stats_before_*.png` / `stats_after_*.png`, `stats_compare_*.png` (A~D, L)

@@ -25,10 +25,17 @@
 | 시점 | Batches | SetPass | Shadow casters | CPU main |
 |---|---:|---:|---:|---:|
 | A | 253 → 249 | 71 → 71 | 724 → 724 | 9.5 → 9.2 ms |
+| B | 263 → 263 | 78 → 78 | 632 → 632 | 10.1 → 10.8 ms |
+| C | 388 → 391 | 78 → 78 | 642 → 642 | 10.6 → 9.7 ms |
+| D | 275 → 275 | 71 → 71 | 221 → 221 | 10.0 → 9.8 ms |
+| J (맵 밖) | 67 → 67 | 55 → 55 | 107 → 107 | 9.1 → 9.0 ms |
 
-- 시점 A에서 SetPass와 Shadow casters가 같다. Batches 차이(−4)는 한 프레임 스냅샷 오차 수준이다.
-- **B~D와 J의 Stats는 아직 없다.** 캡처 도중 다른 창이 Unity 위로 올라와 잘못 찍혀서 삭제했다. 재캡처가 필요하다.
+- 모든 시점에서 SetPass와 Shadow casters가 같다. Batches 차이(±4)는 한 프레임 스냅샷 오차 수준이다.
+- **렌더링 비용 변화는 없다.** 셰이더와 변형은 그대로이고 상수 값만 바뀌었기 때문이다.
+- B~D와 J는 첫 캡처 때 다른 창이 Unity 위로 올라와 잘못 찍혀 삭제했고, 이후 다시 캡처했다.
+  - 다시 찍을 때는 한 번의 Play 모드에서 스카이박스 값을 런타임에 이전 값과 새 값으로 바꿔 가며 찍었다.
+  - 그 Play 세션에는 출입문 작업등도 켜져 있었다(양쪽 동일 조건). 캡처 후 스카이박스 값은 새 값으로 되돌렸다.
 
 ## 파일
 - 화면: `before_*.png` / `after_*.png`, 나란히 붙인 `compare_*.png` (A~D, J_edge_low, K_edge_high)
-- Stats: `stats_before_A.png` / `stats_after_A.png`, `stats_compare_A.png`
+- Stats: `stats_before_*.png` / `stats_after_*.png`, `stats_compare_*.png` (A~D, J)
