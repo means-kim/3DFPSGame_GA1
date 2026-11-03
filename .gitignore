@@ -82,3 +82,6 @@ crashlytics-build.properties
 
 # vscode
 .vscode
+
+# Unity Profiler 원본 녹화 파일 (용량이 커서 로컬에만 보관)
+Docs/Performance/**/*.data
