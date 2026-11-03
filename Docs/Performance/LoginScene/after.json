@@ -1,0 +1,14 @@
+{
+  "scene": "LoginScene",
+  "tag": "after",
+  "state": "등장 시퀀스 이후 정상 상태(연출 재생 중, 유휴 연출 막음)",
+  "CPU Main Thread Frame Time": { "median": 1.407, "samples": 300, "unit": "ms" },
+  "CPU Render Thread Frame Time": { "median": 0.817, "samples": 300, "unit": "ms" },
+  "Batches Count": { "median": 32.000, "samples": 300, "unit": "count" },
+  "SetPass Calls Count": { "median": 21.000, "samples": 300, "unit": "count" },
+  "Draw Calls Count": { "median": 32.000, "samples": 300, "unit": "count" },
+  "Triangles Count": { "median": 2013.000, "samples": 300, "unit": "count" },
+  "PostLateUpdate.PlayerUpdateCanvases": { "median": 0.446, "samples": 300, "unit": "ms" },
+  "UGUI.Rendering.UpdateBatches": { "median": 0.443, "samples": 300, "unit": "ms" },
+  "Canvas.BuildBatch": { "median": 0.047, "samples": 300, "unit": "ms" }
+}
