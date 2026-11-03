@@ -60,6 +60,33 @@ public class UI_SunFlare : MonoBehaviour
             .SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).SetDelay(0.5f).SetLink(_streak.gameObject);
     }
 
+    // 등장 연출: 해 빛이 작게 시작해 크게 번쩍였다가 제자리로 돌아온다.
+    // 숨쉬기 트윈은 자식(빛무리 등)에 걸려 있으므로, 여기서는 부모(SunFX)의 크기만 다뤄 서로 겹치지 않게 한다.
+    public Tween PlayIntroBurst(float duration)
+    {
+        transform.DOKill();
+        transform.localScale = Vector3.one * 0.2f;
+
+        return DOTween.Sequence()
+            .Append(transform.DOScale(1.35f, duration * 0.6f).SetEase(Ease.OutQuad))
+            .Append(transform.DOScale(1f, duration * 0.4f).SetEase(Ease.InOutSine))
+            .SetUpdate(true)
+            .SetLink(gameObject);
+    }
+
+    // 게임 시작 전환: 해 빛이 화면을 덮을 만큼 커지며 최대로 밝아진다.
+    public Tween PlayFlash(float duration)
+    {
+        transform.DOKill();
+        _sunGlow.DOKill();
+
+        return DOTween.Sequence()
+            .Append(transform.DOScale(5f, duration).SetEase(Ease.InExpo))
+            .Join(_sunGlow.DOFade(1f, duration * 0.5f))
+            .SetUpdate(true)
+            .SetLink(gameObject);
+    }
+
     private void LateUpdate()
     {
         // 배경이 움직여도 해 위치에 붙어 있도록 매 프레임 따라간다.

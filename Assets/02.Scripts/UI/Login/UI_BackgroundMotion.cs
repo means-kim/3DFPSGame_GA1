@@ -19,6 +19,8 @@ public class UI_BackgroundMotion : MonoBehaviour
     private RawImage _rawImage;
     private RectTransform _rectTransform;
     private Vector2 _parallaxOffset;
+    private Tween _kenBurnsTween;
+    private bool _isZooming;
 
     // 다른 연출(플레어 등)이 같이 쓰도록 부드럽게 보정된 마우스 입력(-1 ~ 1)을 공개한다.
     public Vector2 MouseInput { get; private set; }
@@ -38,7 +40,7 @@ public class UI_BackgroundMotion : MonoBehaviour
             1f - _kenBurnsZoom,
             1f - _kenBurnsZoom);
 
-        DOTween.To(() => _rawImage.uvRect, rect => _rawImage.uvRect = rect, target, _kenBurnsDuration)
+        _kenBurnsTween = DOTween.To(() => _rawImage.uvRect, rect => _rawImage.uvRect = rect, target, _kenBurnsDuration)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo)
             .SetLink(gameObject);
@@ -46,6 +48,9 @@ public class UI_BackgroundMotion : MonoBehaviour
 
     private void Update()
     {
+        // 화면 전환 중에는 마우스를 따라 움직이지 않는다.
+        if (_isZooming) return;
+
         // 화면 중심 기준 마우스 위치를 -1 ~ 1로 바꾼다.
         Vector2 mouse = Input.mousePosition;
         Vector2 normalized = new Vector2(
@@ -59,6 +64,22 @@ public class UI_BackgroundMotion : MonoBehaviour
         // 배경은 마우스 반대 방향으로 움직인다.
         _parallaxOffset = -MouseInput * _parallaxAmount;
         _rectTransform.anchoredPosition = _parallaxOffset;
+    }
+
+    // 배경 이미지의 한 점(UV)을 향해 빨려 들어가듯 확대한다. 게임 시작 전환에서 쓴다.
+    // zoom이 4면 화면에 이미지의 1/4 영역만 보이게 된다.
+    public Tween ZoomTo(Vector2 uv, float zoom, float duration)
+    {
+        _isZooming = true;
+        _kenBurnsTween?.Kill();
+
+        Vector2 size = Vector2.one / zoom;
+        Rect target = new Rect(uv - size * 0.5f, size);
+
+        return DOTween.To(() => _rawImage.uvRect, rect => _rawImage.uvRect = rect, target, duration)
+            .SetEase(Ease.InExpo)
+            .SetUpdate(true)
+            .SetLink(gameObject);
     }
 
     // 배경 이미지 안의 한 점(UV)이 지금 캔버스 위 어디에 그려지는지 구한다.

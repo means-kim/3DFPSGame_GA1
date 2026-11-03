@@ -63,7 +63,10 @@ public class UI_TitleText : MonoBehaviour
                 {
                     float distance = Mathf.Abs(vertices[index].x + vertices[index].y * _shineSlant - shineX);
                     float amount = 1f - Mathf.Clamp01(distance / _shineWidth);
-                    colors[index] = Color32.Lerp(colors[index], _shineColor, amount);
+                    // 색만 섞고 알파는 원래 값을 지킨다(페이드인 중에 샤인 때문에 글자가 보이지 않게).
+                    Color32 shine = _shineColor;
+                    shine.a = colors[index].a;
+                    colors[index] = Color32.Lerp(colors[index], shine, amount);
                 }
             }
         }
