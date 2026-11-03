@@ -1,0 +1,13 @@
+{
+  "view": "A",
+  "CPU Main Thread Frame Time": { "avg": 2.873, "median": 2.865, "p95": 3.612, "samples": 300, "unit": "ms" },
+  "CPU Render Thread Frame Time": { "avg": 2.029, "median": 1.905, "p95": 2.658, "samples": 299, "unit": "ms" },
+  "GPU Frame Time": { "avg": 6.696, "median": 6.787, "p95": 8.417, "samples": 234, "unit": "ms" },
+  "Batches Count": { "avg": 313.950, "median": 249.000, "p95": 498.000, "samples": 238, "unit": "count" },
+  "SetPass Calls Count": { "avg": 89.580, "median": 71.000, "p95": 142.000, "samples": 238, "unit": "count" },
+  "Draw Calls Count": { "avg": 987.059, "median": 783.000, "p95": 1566.000, "samples": 238, "unit": "count" },
+  "Triangles Count": { "avg": 3059310.672, "median": 2427053.000, "p95": 4854106.000, "samples": 238, "unit": "count" },
+  "Shadow Casters Count": { "avg": 912.605, "median": 724.000, "p95": 1448.000, "samples": 238, "unit": "count" },
+  "Texture Memory": { "avg": 756.090, "median": 757.106, "p95": 757.106, "samples": 300, "unit": "MB" },
+  "Mesh Memory": { "avg": 131.084, "median": 131.084, "p95": 131.084, "samples": 300, "unit": "MB" }
+}

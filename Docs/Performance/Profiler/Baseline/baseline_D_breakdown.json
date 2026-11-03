@@ -1,0 +1,40 @@
+{
+  "view": "D",
+  "frames": 300,
+  "gpu_self_ms_avg": {
+    "_total_ms": 9.158,
+    "UpdateReflectionProbeAtlas": 7.927,
+    "Graphics.DrawProcedural": 0.496,
+    "RenderLoop.ScheduleDraw": 0.468,
+    "MeshSkinning.GPUBatchedSkin": 0.152,
+    "Shadows.ScheduleRenderJobs": 0.058,
+    "Canvas.RenderOverlays": 0.029,
+    "Camera.RenderSkybox": 0.016,
+    "RenderTarget.GrabPixels": 0.003,
+    "ExecuteRenderGraph": 0.003,
+    "Canvas.RenderSubBatch": 0.002,
+    "Setup Camera Properties": 0.001,
+    "RG_BloomPrefilter": 0.001,
+    "Graphics.Blit": 0.001,
+    "LensFlareDataDrivenComputeOcclusion": 0.001,
+    "Profiler.RequestScreenshot": 0.000
+  },
+  "cpu_playerloop_self_ms_avg": {
+    "_total_ms": 3.053,
+    "WaitForJobGroupID": 0.339,
+    "Inl_On Record Render Graph": 0.254,
+    "SRPBRender.ApplyShader": 0.087,
+    "Inl_Forward+ Setup": 0.083,
+    "Semaphore.WaitForSignal": 0.078,
+    "Inl_Setup Light Constants": 0.060,
+    "Inl_UniversalRenderPipeline.ComputeShadowCasterCullingInfos": 0.057,
+    "Inl_RenderCameraStack": 0.056,
+    "SRPBatcher.Flush": 0.052,
+    "Inl_ScriptableRenderContext.Submit": 0.050,
+    "UpdateScene": 0.040,
+    "RenderLoop.ScheduleDraw": 0.038,
+    "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: Main Camera": 0.037,
+    "Inl_UniversalRenderPipeline.RenderSingleCameraInternal: MinimapCamera": 0.035,
+    "ExecuteRenderGraph": 0.033
+  }
+}
