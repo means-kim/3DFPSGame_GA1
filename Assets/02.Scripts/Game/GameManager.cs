@@ -19,10 +19,12 @@ public class GameManager : SingletonBehaviour<GameManager>
     [SerializeField] private TextMeshProUGUI _stateText;
     [SerializeField] private Animator _PlayerAnimator;
     [SerializeField] private GameObject _optionPopup;
+    [SerializeField] private GameObject _gameOverPopup;
 
     private void Start()
     {
         _optionPopup.SetActive(false);
+        _gameOverPopup.SetActive(false);
         StartCoroutine(StartSequence());
     }
 
@@ -62,11 +64,11 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         _state = GameState.GameOver;
 
-        _stateText.gameObject.SetActive(true);
-        _stateText.text = "게임오버";
-        _stateText.color = Color.red;
-
         _PlayerAnimator.SetFloat("MoveMotion", 0); // 달리던 중이었어도 서 있는 동작으로 변경
+
+        // 게임오버 팝업을 띄우고, 버튼을 누를 수 있게 커서를 풀어준다.
+        _gameOverPopup.SetActive(true);
+        CursorManager.Instance.UnlockCursor();
     }
 
     // 계속하기
