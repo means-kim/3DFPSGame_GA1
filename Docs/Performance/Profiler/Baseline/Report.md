@@ -76,12 +76,12 @@
 | Triangles | 2,365,927 | 2,427,053 |
 | Shadow Casters | 401 | 724 |
 
-- Shadow Casters가 약 1.8배로 늘었다. 씬의 포인트 조명 8개와 스폿 조명 17개는 모두 그림자가 꺼져 있고, 그림자를 그리는 조명은 방향광 2개뿐이다. 따라서 증가 원인은 그림자 거리 확장(50 → 80 m)으로 본다.
+- Shadow Casters가 약 1.8배로 늘었다. 씬의 포인트 조명 8개와 스폿 조명 17개는 모두 그림자가 꺼져 있고, 그림자를 그리는 조명은 활성화된 방향광 1개뿐이다(두 번째 방향광은 비활성). 따라서 증가 원인은 그림자 거리 확장(50 → 80 m)으로 본다.
 - 삼각형은 여전히 카타나(근거리 약 500k)가 대부분이다.
 
 ## 2단계 병목 분석 후보 (우선순위)
 1. **반사 프로브 아틀라스:** 위의 `UpdateReflectionProbeAtlas` 집계가 실제 비용인지 확인한다. 프로브 아틀라스와 블렌딩을 끄고 켜며 GPU 시간을 비교한다.
-2. **그림자:** 그림자 거리 80 m와 cascade 수를 확인한다. 그림자를 그리는 방향광이 2개인데, 둘 다 필요한지도 확인한다. A·B·C에서 Shadow Casters가 630~720개다.
+2. **그림자:** 그림자 거리 80 m와 cascade 수를 확인한다. A·B·C에서 Shadow Casters가 630~720개다.
 3. **카타나 메시:** 근거리 500k tris다. 시점 A·C에서 삼각형의 대부분을 차지한다.
 4. **포스트 프로세싱:** HDR 색 보정, 블룸(렌즈 먼지), 그레인, SSAO를 하나씩 끄며 GPU 시간을 비교한다.
 5. **Minimap 카메라:** 장면을 한 번 더 그린다. 시점 D(상공)에서도 1.2M tris가 남는 원인 후보다.
@@ -93,3 +93,4 @@
 - `baseline_<A~D>.data`: Profiler 원본 녹화(시점당 약 70 MB)
 - `profiler_<A~D>_cpu.png`, `profiler_<A~D>_rendering.png`: CPU Usage, Rendering 모듈 화면
 - `profiler_A_gpu.png`, `profiler_A_memory.png`: GPU Usage, Memory 모듈 화면(시점 A만)
+- 2단계 결과: `../Ablation/Report.md` (UpdateReflectionProbeAtlas 집계는 착시로 확인됨)
