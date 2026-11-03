@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -40,10 +41,7 @@ public class GameManager : SingletonBehaviour<GameManager>
             }
             else if (_state == GameState.Pause)
             {
-                _state = GameState.Playing;
-                Time.timeScale = 1;
-                _optionPopup.SetActive(false);
-                CursorManager.Instance.LockCursor();
+                Resume();
             }
         }
     }
@@ -69,5 +67,31 @@ public class GameManager : SingletonBehaviour<GameManager>
         _stateText.color = Color.red;
 
         _PlayerAnimator.SetFloat("MoveMotion", 0); // 달리던 중이었어도 서 있는 동작으로 변경
+    }
+
+    // 계속하기
+    public void Resume()
+    {
+        _state = GameState.Playing;
+        Time.timeScale = 1;
+        _optionPopup.SetActive(false);
+        CursorManager.Instance.LockCursor();
+    }
+
+    // 다시하기
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // 게임 종료
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
