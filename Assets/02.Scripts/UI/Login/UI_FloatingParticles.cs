@@ -18,6 +18,7 @@ public class UI_FloatingParticles : MonoBehaviour
         public float Life;
         public float MaxLife;
         public float BaseAlpha;
+        public bool IsEnabled = true; // 세기 설정으로 꺼진 입자는 움직이지도 그리지도 않는다
     }
 
     [Header("참조")]
@@ -63,6 +64,24 @@ public class UI_FloatingParticles : MonoBehaviour
         foreach (Particle particle in _particles)
         {
             Respawn(particle, true);
+        }
+    }
+
+    // 세기 설정: 먼지와 불씨를 각각 비율만큼만 쓴다(1이면 전부, 0.3이면 30%).
+    public void SetDensity(float ratio)
+    {
+        ratio = Mathf.Clamp01(ratio);
+        int dustLimit = Mathf.RoundToInt(_dustCount * ratio);
+        int emberLimit = Mathf.RoundToInt(_emberCount * ratio);
+
+        for (int i = 0; i < _particles.Length; i++)
+        {
+            bool isEmber = i >= _dustCount;
+            int indexInGroup = isEmber ? i - _dustCount : i;
+            bool isEnabled = indexInGroup < (isEmber ? emberLimit : dustLimit);
+
+            _particles[i].IsEnabled = isEnabled;
+            _particles[i].Image.enabled = isEnabled;
         }
     }
 
@@ -121,6 +140,8 @@ public class UI_FloatingParticles : MonoBehaviour
 
         foreach (Particle particle in _particles)
         {
+            if (!particle.IsEnabled) continue;
+
             particle.Life += deltaTime;
             particle.Position += particle.Velocity * deltaTime;
 

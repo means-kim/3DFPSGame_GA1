@@ -19,6 +19,14 @@ public class UI_LightFlicker : MonoBehaviour
     private float _baseAlpha;
     private float _phase;
     private float _flickerMultiplier = 1f;
+    private bool _isFlickerEnabled = true;
+
+    // 세기 설정: 꺼도 은은한 숨쉬기는 계속한다.
+    public void SetFlickerEnabled(bool isEnabled)
+    {
+        _isFlickerEnabled = isEnabled;
+        if (!isEnabled) _flickerMultiplier = 1f;
+    }
 
     private void Awake()
     {
@@ -46,6 +54,9 @@ public class UI_LightFlicker : MonoBehaviour
         while (true)
         {
             yield return new WaitForSecondsRealtime(Random.Range(_flickerInterval.x, _flickerInterval.y));
+
+            // 세기 설정으로 깜빡임이 꺼져 있으면 숨쉬기만 한다.
+            if (!_isFlickerEnabled) continue;
 
             int count = Random.Range(_flickerCount.x, _flickerCount.y + 1);
             for (int i = 0; i < count; i++)
