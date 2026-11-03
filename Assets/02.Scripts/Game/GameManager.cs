@@ -6,6 +6,7 @@ public enum GameState
 {
     Ready,
     Playing,
+    Pause,
     GameOver,
 }
 
@@ -34,6 +35,25 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(StartSequence());
+    }
+
+    private void Update()
+    {
+        Debug.Log($"유니티 시간 {Time.deltaTime}");
+        Debug.Log($"실제 흐른 시간: {Time.unscaledDeltaTime}");
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (_state == GameState.Playing)
+            {
+                _state = GameState.Pause;
+                Time.timeScale = 0; // 유니티에서 흐르는 게임 시간
+            }
+            else if (_state == GameState.Pause)
+            {
+                _state = GameState.Playing;
+                Time.timeScale = 1;
+            }
+        }
     }
 
     private IEnumerator StartSequence()
