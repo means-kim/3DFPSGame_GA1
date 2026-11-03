@@ -21,6 +21,7 @@ public class UI_BackgroundMotion : MonoBehaviour
     private Vector2 _parallaxOffset;
     private Tween _kenBurnsTween;
     private bool _isZooming;
+    private float _extraZoom = 1f; // 유휴 연출 등에서 추가로 곱하는 배율
 
     // 다른 연출(플레어 등)이 같이 쓰도록 부드럽게 보정된 마우스 입력(-1 ~ 1)을 공개한다.
     public Vector2 MouseInput { get; private set; }
@@ -64,6 +65,23 @@ public class UI_BackgroundMotion : MonoBehaviour
         // 배경은 마우스 반대 방향으로 움직인다.
         _parallaxOffset = -MouseInput * _parallaxAmount;
         _rectTransform.anchoredPosition = _parallaxOffset;
+    }
+
+    // 배경을 추가로 확대한다(1이면 원래대로). 유휴 상태 연출에서 쓴다.
+    // 켄번스(uvRect)·패럴랙스(위치)·전환(uvRect)과 다른 값(크기)을 다루므로 서로 겹치지 않는다.
+    public Tween SetExtraZoom(float amount, float duration)
+    {
+        DOTween.Kill(this);
+
+        return DOTween.To(() => _extraZoom, value =>
+            {
+                _extraZoom = value;
+                _rectTransform.localScale = Vector3.one * (_overscale * _extraZoom);
+            }, amount, duration)
+            .SetTarget(this)
+            .SetEase(Ease.InOutSine)
+            .SetUpdate(true)
+            .SetLink(gameObject);
     }
 
     // 배경 이미지의 한 점(UV)을 향해 빨려 들어가듯 확대한다. 게임 시작 전환에서 쓴다.

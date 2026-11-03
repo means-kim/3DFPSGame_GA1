@@ -482,6 +482,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 52924884}
   m_CullTransparentMesh: 1
+--- !u!1 &198267638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198267639}
+  - component: {fileID: 198267640}
+  m_Layer: 5
+  m_Name: CursorTrail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &198267639
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198267638}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 401646658}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &198267640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198267638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90b0872b764b6b248b79c3fb81e2e8ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_CursorTrail
+  _sprite: {fileID: 21300000, guid: 5019a3b94524f0e4c96ceccffa2793a3, type: 3}
+  _fader: {fileID: 328734230}
+  _poolSize: 40
+  _spawnDistance: 14
+  _trailLife: {x: 0.4, y: 0.6}
+  _trailSize: {x: 26, y: 40}
+  _trailRise: 25
+  _burstCount: 10
+  _burstSpeed: {x: 150, y: 320}
+  _burstLife: {x: 0.4, y: 0.7}
+  _burstSize: {x: 18, y: 30}
+  _burstGravity: 500
+  _burstDrag: 3
+  _colorA: {r: 1, g: 0.55, b: 0.15, a: 0.9}
+  _colorB: {r: 1, g: 0.85, b: 0.4, a: 0.9}
 --- !u!1 &233615062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1318,7 @@ GameObject:
   - component: {fileID: 401646655}
   - component: {fileID: 401646660}
   - component: {fileID: 401646659}
+  - component: {fileID: 401646661}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1347,6 +1411,7 @@ RectTransform:
   - {fileID: 2044745411}
   - {fileID: 587945653}
   - {fileID: 1136739550}
+  - {fileID: 198267639}
   - {fileID: 469407912}
   - {fileID: 328734233}
   m_Father: {fileID: 0}
@@ -1411,6 +1476,29 @@ MonoBehaviour:
   _itemInterval: 0.07
   _itemDuration: 0.35
   _itemStartScale: 0.85
+  _waitFrames: 3
+--- !u!114 &401646661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401646654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 023b91a287fe521478ab4267aaa8d847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_IdleAttract
+  _panel: {fileID: 1136739553}
+  _background: {fileID: 1062211086}
+  _vignette: {fileID: 2044745412}
+  _idleTime: 20
+  _enterDuration: 2
+  _idlePanelAlpha: 0.25
+  _idleZoom: 1.08
+  _idleVignetteAlpha: 0.75
+  _exitDuration: 0.4
+  _mouseThreshold: 2
 --- !u!1 &406164158
 GameObject:
   m_ObjectHideFlags: 0
