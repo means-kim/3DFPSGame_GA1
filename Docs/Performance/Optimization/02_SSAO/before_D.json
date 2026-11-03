@@ -1,0 +1,12 @@
+{
+  "view": "D",
+  "tag": "before",
+  "CPU Main Thread Frame Time": { "median": 2.805, "samples": 300, "unit": "ms" },
+  "CPU Render Thread Frame Time": { "median": 1.897, "samples": 300, "unit": "ms" },
+  "GPU Frame Time": { "median": 7.208, "samples": 233, "unit": "ms" },
+  "Batches Count": { "median": 248.000, "samples": 240, "unit": "count" },
+  "SetPass Calls Count": { "median": 59.000, "samples": 240, "unit": "count" },
+  "Draw Calls Count": { "median": 736.000, "samples": 240, "unit": "count" },
+  "Triangles Count": { "median": 1195917.000, "samples": 240, "unit": "count" },
+  "Shadow Casters Count": { "median": 118.000, "samples": 240, "unit": "count" }
+}
