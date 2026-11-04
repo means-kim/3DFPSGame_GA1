@@ -749,7 +749,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBE44\uBC00\uBC88\uD638"
+  m_text: '!@#QWEasd123'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9cecc93602b84fc418a68d06d2be41a4, type: 2}
   m_sharedMaterial: {fileID: -6918511641542716689, guid: 9cecc93602b84fc418a68d06d2be41a4, type: 2}
@@ -3095,7 +3095,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC544\uC774\uB514"
+  m_text: kkk@gmail.com
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9cecc93602b84fc418a68d06d2be41a4, type: 2}
   m_sharedMaterial: {fileID: -6918511641542716689, guid: 9cecc93602b84fc418a68d06d2be41a4, type: 2}
