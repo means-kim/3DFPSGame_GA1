@@ -26,6 +26,6 @@ public class PlayerPrefsAccountRepository
     // 비밀번호 검증
     public bool CheckPassword(string id, string password)
     {
-        return Exists(id) && PlayerPrefs.GetString(id) == password;
+        return Exists(id) && PlayerPrefs.GetString(GetKeyID(id)) == password;
     }
 }

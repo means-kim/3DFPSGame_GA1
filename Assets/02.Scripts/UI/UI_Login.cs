@@ -118,6 +118,7 @@ public class UI_Login : MonoBehaviour
         if (_repository.Exists(id))
         {
             _messageText.text = "이미 존재하는 아이디 입니다.";
+            return;
         }
 
         // Todo: 실제 회원가입 데이터 저장
