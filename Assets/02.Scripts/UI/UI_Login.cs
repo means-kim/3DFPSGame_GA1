@@ -29,6 +29,8 @@ public class UI_Login : MonoBehaviour
 
     private Mode _mode = Mode.Login;
 
+    private PlayerPrefsAccountRepository _repository = new PlayerPrefsAccountRepository();
+
     private void Start()
     {
         Refresh();
@@ -41,6 +43,8 @@ public class UI_Login : MonoBehaviour
         _passwordConfirmInput.gameObject.SetActive(!isLoginMode);
         _loginButton.gameObject.SetActive(isLoginMode);
         _gotoRegisterButton.gameObject.SetActive(isLoginMode);
+
+        _registerButton.gameObject.SetActive(!isLoginMode);
         _gotoLoginButton.gameObject.SetActive(!isLoginMode);
     }
 
@@ -71,7 +75,17 @@ public class UI_Login : MonoBehaviour
             return;
         }
 
-        SceneManager.LoadScene("GameScene");
+        if (_repository.CheckPassword(id, password))
+        {
+            SceneManager.LoadScene("GameScene");
+        }
+        else
+        {
+            {
+                _messageText.text = "아이디와 비밀번호를 확인해주세요.";
+                return;
+            }
+        }
     }
 
     public void Register()
@@ -81,6 +95,12 @@ public class UI_Login : MonoBehaviour
         string passwordConfirm = _passwordConfirmInput.text;
 
         // Todo: ID와 비밀번호 규칙
+        // ID: 이메일
+        // 비밀번호: 영어만 되며 특수문자 대문자 하나 이상을 포함한 7~15글자
+        // 규칙이 여기서만 쓰일까?
+        // 정리 과제
+        //  - 정규표현식
+        //  - 명세 패턴
 
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password))
         {
@@ -95,7 +115,13 @@ public class UI_Login : MonoBehaviour
         }
 
         // Todo: 중복 ID 검사
+        if (_repository.Exists(id))
+        {
+            _messageText.text = "이미 존재하는 아이디 입니다.";
+        }
+
         // Todo: 실제 회원가입 데이터 저장
+        _repository.Register(id, password);
 
         GotoLogin();
         _messageText.text = "가입 했습니다. 로그인 해주세요.";
