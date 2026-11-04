@@ -28,24 +28,8 @@ public class UI_Login : MonoBehaviour
     [Header("기타")]
     [SerializeField] private TextMeshProUGUI _messageText; // 안내 글자
 
-    // 아이디 규칙: 이메일 형식 (영문, 숫자, '.', '_', '-' @ 도메인에 '.' 필요)
-    //  ^                      문자열 시작
-    //  [A-Za-z0-9._-]+        @ 앞부분(1글자 이상)
-    //  @                      @ 하나
-    //  [A-Za-z0-9_-]+         도메인 첫 구간
-    //  (\.[A-Za-z0-9_-]+)+    '.' + 구간이 1번 이상 (점이 맨 뒤나 연속되면 불가)
-    //  \z                     문자열 끝
-    private static readonly Regex EmailRegex =
-        new Regex(@"^[A-Za-z0-9._-]+@[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)+\z");
-
-    // 비밀번호 규칙: 대문자, 소문자, 숫자, 기호를 모두 포함한 8~30글자 (공백·한글 불가)
-    //  (?=.*[A-Z])            대문자 포함
-    //  (?=.*[a-z])            소문자 포함
-    //  (?=.*[0-9])            숫자 포함
-    //  (?=.*[^A-Za-z0-9])     기호 포함
-    //  [\x21-\x7E]{8,30}      공백을 뺀 ASCII 문자만 8~30글자
-    private static readonly Regex PasswordRegex =
-        new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])[\x21-\x7E]{8,30}\z");
+    private AccountIdSpecification _idSpec = new AccountIdSpecification();
+    private AccountPasswordSpecification _passwordSpec = new AccountPasswordSpecification();
 
     private Mode _mode = Mode.Login;
 
@@ -137,16 +121,16 @@ public class UI_Login : MonoBehaviour
         }
 
         // ID 규칙 : 이메일
-        if (!EmailRegex.IsMatch(id))
+        if (!_idSpec.IsSatisfiedBy(id))
         {
-            _messageText.text = "아이디는 이메일 형식이어야 합니다.";
+            _messageText.text = _idSpec.ErrorMessage;
             return;
         }
 
         // 비밀번호 규칙 : 
-        if (!PasswordRegex.IsMatch(password))
+        if (!_passwordSpec.IsSatisfiedBy(password))
         {
-            _messageText.text = "비밀번호는 대문자, 소문자, 숫자, 기호를 모두 포함한 8~30글자여야 합니다.";
+            _messageText.text = _passwordSpec.ErrorMessage;
             return;
         }
 
