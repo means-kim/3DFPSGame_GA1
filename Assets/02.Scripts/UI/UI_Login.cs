@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_Login : MonoBehaviour
@@ -81,7 +80,7 @@ public class UI_Login : MonoBehaviour
 
         if (_repository.CheckPassword(id, password))
         {
-            SceneManager.LoadScene("GameScene");
+            SceneLoader.Load("GameScene");
         }
         else
         {
